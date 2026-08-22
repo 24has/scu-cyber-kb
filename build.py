@@ -389,83 +389,40 @@ def build_index(sections, by_section, categories, cat_labels, report_incident=No
         <div class="announcement-grid">{items}</div>
       </section>"""
 
-        elif sec_id == "awareness":
-            # Awareness: grid of cards
-            items = ""
-            for a in sec_arts:
-                items += f"""
-            <a href="/{a['id']}" class="awareness-card">
-              <h3>{a['title']}</h3>
-              <p>{a.get('description', '')}</p>
-            </a>"""
-            section_blocks += f"""
-      <section class="home-section">
-        <h2 class="home-section__heading">{sec['label']}</h2>
-        <div class="awareness-grid">{items}</div>
-      </section>"""
+        elif sec_id in ("awareness", "policies", "guidelines", "knowledge-base"):
+            # Compact tile card linking to the section landing page
+            # Count items for the meta line
+            if sec_id == "knowledge-base":
+                count = len(sec_arts)
+                meta = f"{count} article" + ("s" if count != 1 else "")
+                desc = "How-to guides, explanations, and reference material for cyber resilience."
+            elif sec_id == "awareness":
+                count = len(sec_arts)
+                meta = f"{count} item" + ("s" if count != 1 else "")
+                desc = "Campaigns, posters, tips, and events to keep security top of mind."
+            elif sec_id == "policies":
+                count = sum(1 for d in (documents or []) if d.get("section") == "policies")
+                meta = f"{count} document" + ("s" if count != 1 else "")
+                desc = "University information security policies. Public."
+            else:  # guidelines
+                count = sum(1 for d in (documents or []) if d.get("section") == "guidelines")
+                meta = f"{count} document" + ("s" if count != 1 else "")
+                desc = "Guidelines and standards for SCU staff."
 
-        elif sec_id == "policies":
-            # Public — show one card per document linking to the landing page anchor
-            pp_html = '<div class="kb-card-grid">'
-            for d in (documents or []):
-                if d.get("section") != "policies":
-                    continue
-                pp_html += '<a href="/policies#' + d.get("type", "policy") + '" class="kb-card">'
-                pp_html += '<h3>' + d["title"] + '</h3>'
-                pp_html += '<p>' + d.get("summary", "")[:140] + '</p>'
-                pp_html += '<span class="kb-card__count">Open document</span>'
-                pp_html += '</a>'
-            pp_html += '</div>'
-            section_blocks += '<section class="home-section"><h2 class="home-section__heading">' + sec["label"] + '</h2>' + pp_html + '</section>'
-
-        elif sec_id == "guidelines":
-            # Staff only — show category cards with Staff only badge on the heading
-            pp_html = '<div class="kb-card-grid">'
-            pp_groups = {}
-            for d in (documents or []):
-                if d.get("section") != "guidelines":
-                    continue
-                pp_groups.setdefault(d.get("type", "other"), []).append(d)
-            # Map plural category IDs to singular document types
-            type_map = {"guidelines": "guideline", "standards": "standard", "procedures": "procedure"}
-            for cat in sec_cats:
-                cat_docs = pp_groups.get(cat["id"], []) or pp_groups.get(type_map.get(cat["id"], cat["id"]), [])
-                if not cat_docs:
-                    continue
-                first = cat_docs[0]
-                pp_html += '<a href="/guidelines#' + cat["id"] + '" class="kb-card">'
-                pp_html += '<h3>' + cat["label"] + '</h3>'
-                pp_html += '<p>' + first.get("summary", "")[:140] + '</p>'
-                pp_html += '<span class="kb-card__count">' + str(len(cat_docs)) + ' document' + ('s' if len(cat_docs) != 1 else '') + '</span>'
-                pp_html += '</a>'
-            pp_html += '</div>'
-            section_blocks += '<section class="home-section"><h2 class="home-section__heading">' + sec["label"] + ' <span class="badge badge--staff">Staff only</span></h2>' + pp_html + '</section>'
-
-        else:
-            # Knowledge base: compact card grid of categories (not full article list)
-            grouped = {}
-            for a in sec_arts:
-                grouped.setdefault(a.get("category", ""), []).append(a)
-
-            kb_html = '<div class="kb-card-grid">'
-            for cat in sec_cats:
-                cat_id = cat["id"]
-                cat_arts = grouped.get(cat_id, [])
-                if not cat_arts:
-                    continue
-                first = cat_arts[0]
-                kb_html += f"""
-            <a href="/knowledge-base#{cat_id}" class="kb-card">
-              <h3>{cat['label']}</h3>
-              <p>{first.get('description', '')}</p>
-              <span class="kb-card__count">{len(cat_arts)} article{'s' if len(cat_arts) != 1 else ''}</span>
-            </a>"""
-            kb_html += "</div>"
+            badge_html = ""
+            if sec.get("audience") == "staff":
+                badge_html = '<span class="badge badge--staff">Staff only</span>'
 
             section_blocks += f"""
       <section class="home-section">
-        <h2 class="home-section__heading">{sec['label']}</h2>
-        {kb_html}
+        <div class="section-tile">
+          <div class="section-tile__header">
+            <h2 class="section-tile__heading">{sec['label']} {badge_html}</h2>
+            <span class="section-tile__count">{meta}</span>
+          </div>
+          <p class="section-tile__desc">{desc}</p>
+          <a href="/{sec_id}" class="section-tile__link">Browse {sec['label']} →</a>
+        </div>
       </section>"""
 
     # ── Get help section ──

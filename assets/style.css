@@ -478,6 +478,53 @@ tbody tr:hover { background: var(--sage-light); }
   color: var(--navy-dark);
 }
 
+/* ── Section tile cards (homepage) ── */
+.section-tile {
+  display: block;
+  padding: 1.5rem 1.75rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-light);
+  background: var(--white);
+  box-shadow: 0 2px 12px rgba(3,36,54,.06);
+  margin: 0;
+}
+.section-tile__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.section-tile__heading {
+  font-size: 1.125rem;
+  margin: 0;
+  color: var(--navy-dark);
+  border: none;
+  padding: 0;
+}
+.section-tile__count {
+  font-size: 0.75rem;
+  color: var(--navy);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+.section-tile__desc {
+  font-size: 0.9375rem;
+  color: var(--text-muted);
+  margin: 0 0 1rem;
+}
+.section-tile__link {
+  display: inline-block;
+  font-family: Montserrat, sans-serif;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  color: var(--navy);
+  text-decoration: none;
+}
+.section-tile__link:hover { color: var(--teal); text-decoration: underline; }
+
 /* ── Utility ── */
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
 .text-gold { color: var(--gold); }
