@@ -560,10 +560,7 @@ def build_section_page(section, section_articles, sec_docs, section_categories, 
             for d in cat_docs:
                 aud = d.get("audience", "")
                 badge = ""
-                if aud == "staff":
-                    badge = '<span class="badge badge--staff">Staff only</span>'
-                elif isinstance(aud, list) and "students" in aud:
-                    badge = '<span class="badge badge--audience">All users</span>'
+                badge = ""  # documents are public; no audience badge
                 meta_parts = []
                 if d.get("version"):
                     meta_parts.append('<span class="doc-card__version">' + d["version"] + '</span>')
