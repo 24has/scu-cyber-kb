@@ -217,10 +217,10 @@ def build_site():
         for a in sorted(by_category.get(category, []), key=lambda x: x.get("order", 99)):
             if a["id"] == art["id"]:
                 sidebar += (
-                    f'<li><a href="/{a["id"]}.html" class="active">{a["title"]}</a></li>\n'
+                    f'<li><a href="/{a["id"]}" class="active">{a["title"]}</a></li>\n'
                 )
             else:
-                sidebar += f'<li><a href="/{a["id"]}.html">{a["title"]}</a></li>\n'
+                sidebar += f'<li><a href="/{a["id"]}">{a["title"]}</a></li>\n'
 
         variables = {
             "title": title,
@@ -273,13 +273,13 @@ def build_index(nav, by_category):
         else:
             first_art = cat_articles[0]
             cards += f"""
-            <a href="/{first_art['id']}.html" class="category-card">
+            <a href="/{first_art['id']}" class="category-card">
               <h3>{label}</h3>
               <p>{item.get('label', '')}</p>
               <ul class="article-list" style="margin-top:1rem">
             """
             for art in sorted(cat_articles, key=lambda x: x.get("order", 99)):
-                cards += f"""<li><a href="/{art['id']}.html">
+                cards += f"""<li><a href="/{art['id']}">
                   <span class="article-list__title">{art['title']}</span>
                   <span class="article-list__desc">{art.get('description','')}</span>
                 </a></li>"""
