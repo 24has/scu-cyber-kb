@@ -84,24 +84,16 @@
     ],
     "knowledge-base": [
       {
-        "id": "mfa",
-        "label": "Multi-factor authentication"
-      },
-      {
-        "id": "passwords",
-        "label": "Passwords"
-      },
-      {
-        "id": "phishing",
-        "label": "Phishing"
-      },
-      {
-        "id": "devices",
-        "label": "Devices"
+        "id": "authentication",
+        "label": "Authentication"
       },
       {
         "id": "email-security",
         "label": "Email security"
+      },
+      {
+        "id": "devices",
+        "label": "Devices"
       },
       {
         "id": "remote-access",
@@ -114,10 +106,6 @@
       {
         "id": "software-security",
         "label": "Software security"
-      },
-      {
-        "id": "policy",
-        "label": "Policy"
       }
     ],
     "policies": [
@@ -325,7 +313,7 @@
       "id": "mfa",
       "title": "Multi-factor authentication (MFA)",
       "section": "knowledge-base",
-      "category": "mfa",
+      "category": "authentication",
       "audience": [
         "staff",
         "students"
@@ -337,7 +325,7 @@
       "id": "passwords",
       "title": "Passwords and passphrases",
       "section": "knowledge-base",
-      "category": "passwords",
+      "category": "authentication",
       "audience": [
         "staff",
         "students"
@@ -349,7 +337,7 @@
       "id": "phishing",
       "title": "Report a phishing email",
       "section": "knowledge-base",
-      "category": "phishing",
+      "category": "email-security",
       "audience": [
         "staff",
         "students"
@@ -401,18 +389,6 @@
       ],
       "description": "Approved software, automatic updates, and requesting new software.",
       "order": 7
-    },
-    {
-      "id": "policy",
-      "title": "Acceptable use of ICT",
-      "section": "knowledge-base",
-      "category": "policy",
-      "audience": [
-        "staff",
-        "students"
-      ],
-      "description": "What is and is not allowed when using SCU systems and devices.",
-      "order": 8
     }
   ]
 }
