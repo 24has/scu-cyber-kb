@@ -22,6 +22,8 @@ DIST = ROOT / "dist"
 
 CATEGORY_LABELS = {
     "multi-factor-authentication": "Multi-factor authentication",
+    "cyber-awareness": "Cyber awareness",
+    "posters": "Awareness posters",
     "passwords": "Passwords",
     "phishing": "Phishing",
     "devices": "Devices",
@@ -141,19 +143,40 @@ def markdown_to_html(text):
     )
 
     # Paragraphs: wrap remaining text blocks in <p>
-    # Split by double newlines
+    # Split by double newlines, preserving HTML blocks
     paragraphs = []
+    in_html = False
+    html_buf = []
     for block in html.split("\n\n"):
         block = block.strip()
         if not block:
             continue
-        # Skip blocks that are already HTML elements
-        if block.startswith("<"):
+
+        # Track multi-line HTML open/close divs
+        is_open = block.startswith("<div") and not block.endswith(">")
+        is_close = block == "</div>"
+
+        if is_open:
+            in_html = True
+            html_buf.append(block)
+            continue
+
+        if in_html:
+            html_buf.append(block)
+            if is_close:
+                paragraphs.append("\n\n".join(html_buf))
+                html_buf = []
+                in_html = False
+            continue
+
+        # Single-line HTML tags pass through
+        if block.startswith("<") and block.endswith(">"):
             paragraphs.append(block)
-        else:
-            # Join single newlines within paragraph
-            block_html = block.replace("\n", " ")
-            paragraphs.append(f"<p>{block_html}</p>")
+            continue
+
+        # Join single newlines within paragraph, wrap in <p>
+        block_html = block.replace("\n", " ")
+        paragraphs.append(f"<p>{block_html}</p>")
 
     return "\n\n".join(paragraphs)
 

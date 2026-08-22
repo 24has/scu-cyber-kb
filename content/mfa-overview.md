@@ -6,47 +6,87 @@ updated = "2026-08-22"
 applies_to = "All staff and students"
 action_required = "1 February 2027"
 +++
+
 ## What is changing
 
-Microsoft is replacing SMS-based multi-factor authentication (MFA). SMS codes are being phased out because they can be intercepted, phished, or delayed. **All staff and students must switch to a more secure method by 1 February 2027.**
+Microsoft is phasing out SMS-based multi-factor authentication. SMS codes are a security risk. They can be intercepted, stolen in SIM-swap attacks, or phished. They are also slow and fail when you have no phone signal.
 
-You will still use your SCU email and password as the first step. MFA is the second step. What changes is how that second step works.
+All staff and students need to move to a better method by 1 February 2027. After that date, SMS codes stop working for MFA.
 
-## What a passkey is
+You still sign in with your SCU email and password. MFA is the second check. What changes is how you prove it is really you.
 
-A passkey is the recommended replacement for SMS codes. Instead of waiting for a text and typing six digits, you use something you already have: your fingerprint, your face, or your device PIN. It takes about a second and it cannot be phished.
+## The best option: a passkey
 
-Think of a passkey as a digital key stored on your device. When you sign in, your device confirms it is you locally. Your fingerprint or face never leaves your device and is never sent anywhere. Your device just tells the SCU sign-in page "yes, this is the right person" and lets you through.
+A passkey is the method we recommend. Instead of typing a code, you use your fingerprint, face, or device PIN. It takes about one second. It cannot be phished.
 
-<div class="callout">
+A passkey is a digital key stored on your device. When you sign in, your device checks it is you and confirms to the sign-in page. Your fingerprint or face data never leaves your device.
 
-**A passkey is not a password.** You still use your SCU password as step one. The passkey replaces the SMS code as step two.
+A passkey replaces only the SMS code, not your password. You still enter your SCU password first.
 
-</div>
+## Where passkeys live
 
-## Where you can store a passkey
-
-You only need one. We recommend adding at least two as backup.
+You only need one passkey. Add at least two as a backup.
 
 <div class="table-wrap">
 
-| Option | How it works |
+| Where | How it works |
 |---|---|
-| **Your laptop or desktop** | Your device's built-in security stores the passkey. Use Windows Hello, Touch ID, or your PIN. |
-| **Your phone or tablet** | The passkey lives on your phone. When you sign in on a computer, your phone confirms it is you via Bluetooth. |
-| **A security key** | A small USB or NFC key. Plug it in or tap it. Good for shared computers or if you do not have a phone. |
+| Your laptop or desktop | The passkey sits in your device's secure chip. Use Windows Hello, Touch ID, or your PIN to unlock it. |
+| Your phone or tablet | The passkey lives on your phone. When you sign in on a computer, your phone confirms your identity over Bluetooth. |
+| A security key | A small USB or NFC key. Plug it in or tap it. Good for shared computers or if you do not have a phone. |
 
 </div>
 
-## Your MFA options compared
+## Comparing your options
 
 <div class="table-wrap">
 
-| Method | Speed | Works offline? | Needs a phone? | Security |
+| Method | Speed | Offline? | Needs phone? | Can it be phished? |
 |---|---|---|---|---|
-| **Passkey** (recommended) | A second | Yes | No (any device works) | Phishing-resistant |
-| **Microsoft Authenticator** | A few seconds | No (needs internet) | Yes | Strong |
-| **TOTP app** | Type a 6-digit code | Yes | No (desktop apps available) | Strong |
-| **Hardware security key** | A second (tap) | Yes | No | Phishing-resistant |
+| Passkey | ~1 second | Yes | No | No |
+| Microsoft Authenticator | ~3 seconds | No | Yes | No |
+| TOTP app | ~15 seconds | Yes | No | No |
+| Security key | ~1 second | Yes | No | No |
+| SMS code | 10-30 seconds | No | Yes | Yes |
+
+</div>
+
+Passkeys are fastest and most secure. But Microsoft Authenticator and TOTP apps are both solid choices if a passkey does not suit you.
+
+## What you get with each method
+
+<div class="info-cards">
+
+<div class="info-card">
+
+**Passkey**
+
+Use your fingerprint, face, or PIN. No codes to type. Works offline. Tied to your device so it cannot be phished.
+
+</div>
+
+<div class="info-card">
+
+**Microsoft Authenticator**
+
+A free phone app. Tap Approve on a push notification when you sign in. Needs internet on your phone.
+
+</div>
+
+<div class="info-card">
+
+**TOTP app**
+
+A free app that shows a six-digit code. Works offline and on desktop computers. No Microsoft account needed.
+
+</div>
+
+<div class="info-card">
+
+**Security key**
+
+A small physical key (YubiKey style). Plug into USB or tap on NFC. Fastest option. No phone needed. Can buy your own, or Technology Services can supply one.
+
+</div>
 
 </div>

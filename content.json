@@ -1,43 +1,62 @@
 {
   "site": {
     "title": "Cyber Security Knowledge Base",
-    "description": "Information and guides for staff and students at Southern Cross University.",
-    "base": "https://cyber.scu.edu.au"
+    "description": "Information and guides for staff and students at Southern Cross University."
   },
   "nav": [
-    {"label": "MFA", "category": "multi-factor-authentication"},
-    {"label": "Passwords", "category": "passwords"},
-    {"label": "Phishing", "category": "phishing"},
-    {"label": "Devices", "category": "devices"}
+    {"label": "Multi-factor authentication", "category": "multi-factor-authentication"},
+    {"label": "Cyber awareness", "category": "cyber-awareness"},
+    {"label": "Awareness posters", "category": "posters"}
   ],
   "articles": [
     {
       "id": "mfa-overview",
-      "title": "Multi-factor authentication (MFA)",
+      "title": "What is MFA and what is changing",
       "category": "multi-factor-authentication",
-      "description": "What is changing, what a passkey is, and your MFA options compared.",
+      "description": "Why SMS is going away, what a passkey is, and your MFA options compared.",
       "order": 1
     },
     {
       "id": "register-passkey",
-      "title": "How to register a passkey",
+      "title": "Register a passkey",
       "category": "multi-factor-authentication",
-      "description": "Step-by-step instructions for setting up a passkey on your device.",
+      "description": "Set up a passkey on your laptop, phone, or security key. About 5 minutes.",
       "order": 2
     },
     {
       "id": "setup-authenticator",
-      "title": "How to set up Microsoft Authenticator",
+      "title": "Set up Microsoft Authenticator",
       "category": "multi-factor-authentication",
-      "description": "Use push notifications instead of SMS codes.",
+      "description": "Use push notifications on your phone instead of SMS codes.",
       "order": 3
     },
     {
       "id": "setup-totp",
-      "title": "How to set up a TOTP app",
+      "title": "Set up a TOTP app",
       "category": "multi-factor-authentication",
-      "description": "Use a six-digit code app like Google Authenticator.",
+      "description": "Use Google Authenticator or another code-generating app. Works on desktop too.",
       "order": 4
+    },
+    {
+      "id": "staying-safe-online",
+      "title": "Staying safe online",
+      "category": "cyber-awareness",
+      "description": "Passwords, phishing, device updates, public Wi-Fi, and backing up your work.",
+      "order": 1
+    },
+    {
+      "id": "spot-phishing",
+      "title": "How to spot a phishing email",
+      "category": "cyber-awareness",
+      "description": "The six signs that an email is a scam, and what to do when you find one.",
+      "order": 2
+    },
+    {
+      "id": "awareness-posters",
+      "title": "Print and display",
+      "category": "posters",
+      "description": "Download and print awareness posters for your office, common room, or classroom.",
+      "order": 1
     }
   ]
 }

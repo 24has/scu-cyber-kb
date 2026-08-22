@@ -178,6 +178,16 @@ tbody tr:hover { background: var(--sage-light); }
 .home-hero h1 { color: var(--white); font-size: clamp(2rem, 1.75rem + 1.5vw, 2.75rem); margin-bottom: 0.75rem; }
 .home-hero p { font-size: 1.15rem; opacity: .9; max-width: 600px; }
 
+/* ── Poster grid ── */
+.poster-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
+.poster-card { border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: 1.25rem; background: var(--white); }
+.poster-card__preview { overflow: hidden; border-radius: 6px; }
+.poster-card p { margin: 0.5rem 0 0; }
+
+/* ── FAQ block ── */
+.faq p { margin-bottom: 0.75rem; }
+.faq p strong { display: block; margin-bottom: 0.25rem; font-family: Montserrat, sans-serif; }
+
 /* ── Utility ── */
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
 .text-gold { color: var(--gold); }

@@ -1,107 +1,82 @@
 +++
 id = "setup-totp"
-title = "How to set up a TOTP app"
+title = "Set up a TOTP app"
 category = "multi-factor-authentication"
 updated = "2026-08-22"
 applies_to = "All staff and students"
-time_required = "5 minutes"
+time_required = "About 5 minutes"
 +++
 
-**Requirements:** any TOTP app (Google Authenticator or other).
+## What is a TOTP app?
+
+TOTP stands for time-based one-time password. The app shows a six-digit code that changes every 30 seconds. You type this code at sign-in.
+
+It works on phones and desktop computers. You do not need a Microsoft account. It works offline.
+
+Common apps: Google Authenticator (free, iPhone and Android), Authy (free, desktop and phone), Bitwarden (built into the password manager).
+
+## Set it up
 
 <div class="steps">
 
-1. Install your chosen TOTP app before you start.
-2. On your computer, go to [mysignins.microsoft.com/security-info](https://mysignins.microsoft.com/security-info) and sign in.
-3. Click **Add sign-in method**, select **Authenticator app**, then click **Add**.
-4. Below the QR code, click **I want to use a different authenticator app**. A new QR code appears. This one works with any TOTP app.
-5. Scan the QR code with your TOTP app. **Google Authenticator:** tap the plus icon, then Scan a QR code.
-6. Your app now shows a six-digit code that refreshes every 30 seconds. On your computer, click **Next**, enter the code, then click **Done**.
-7. Confirm **Authenticator app** appears under your sign-in methods.
+1. Install your TOTP app.
+2. On your computer, go to <a href="https://mysignins.microsoft.com/security-info">mysignins.microsoft.com/security-info</a> and sign in.
+3. Click **Add sign-in method** → **Authenticator app** → **Add**.
+4. Below the QR code, click **I want to use a different authenticator app**. A new code appears. This one works with any TOTP app.
+5. Scan the QR code with your app (Google Authenticator: tap + then Scan a QR code).
+6. The app now shows a six-digit code. On your computer, click **Next**, type the code, click **Done**.
 
 </div>
 
-## Signing in with a TOTP app
+## Sign in with a TOTP app
 
 <div class="steps">
 
-1. Sign in with your SCU email and password as usual.
-2. When the MFA prompt appears, click **Use a verification code** (or **I can't use my Microsoft Authenticator app right now** on some screens).
-3. Open your TOTP app, find the six-digit code for your SCU account, and type it in.
+1. Sign in with email and password.
+2. Click **Use a verification code**.
+3. Open your app. Find the six-digit code for SCU. Type it in.
 4. Click **Verify**.
 
 </div>
 
 ## Common questions
 
-<div class="faq-item">
+<div class="faq">
 
-**I do not have a smartphone. Can I still do MFA?**
+**I do not have a smartphone.**
 
-Yes. You can use a passkey on your laptop (Windows Hello or Touch ID), a TOTP app on your desktop, or a hardware security key.
+You can use a TOTP app on your desktop (Authy Desktop, Bitwarden), a passkey on your laptop, or a security key.
 
-</div>
+**No fingerprint reader on my device.**
 
-<div class="faq-item">
+Use your device PIN. Every device that supports passkeys lets you use a PIN instead.
 
-**What if my device does not have a fingerprint reader or face scan?**
+**I share a computer.**
 
-You can use your device PIN instead. Every device that supports passkeys supports PIN-based passkeys. The PIN is tied to that specific device and is not sent online.
+Store your passkey on your phone. When you sign in, your phone asks you to verify. The passkey never touches the shared computer.
 
-</div>
+**New phone — what happens to my passkeys?**
 
-<div class="faq-item">
+iCloud Keychain or Google Password Manager sync them when you restore from backup. Register a second passkey as backup.
 
-**What if I share a computer?**
+**New phone — what happens to my TOTP codes?**
 
-Store your passkey on your phone. When you sign in on the shared computer, a prompt appears on your phone. Your passkey stays on your phone. If you do not have a phone that supports passkeys, contact the Technology Services Service Desk.
+Most apps can transfer. Google Authenticator has a transfer feature. If you lose access, delete the old entry at <a href="https://mysignins.microsoft.com/security-info">mysignins.microsoft.com/security-info</a> and set up again.
 
-</div>
+**New phone — what happens to Microsoft Authenticator?**
 
-<div class="faq-item">
+Restore from cloud backup if you had it turned on. If not, delete the old entry and start fresh.
 
-**What happens to my passkeys when I get a new phone?**
+**Can I use more than one method?**
 
-Passkeys stored in iCloud Keychain (iPhone) or Google Password Manager (Android) sync to your new device when you restore from backup. Register a second passkey on another device as a backup.
+Yes. Each method appears on your Security info page. Register at least two so you are never locked out.
 
-</div>
+**Can I keep using SMS?**
 
-<div class="faq-item">
+Only until 1 February 2027. After that, SMS stops.
 
-**What happens to my TOTP codes when I get a new phone?**
+**What if I do not want a passkey?**
 
-Google Authenticator can transfer codes between phones. If you lose access, go to [mysignins.microsoft.com/security-info](https://mysignins.microsoft.com/security-info) on a computer, delete the old entry, and set up again.
-
-</div>
-
-<div class="faq-item">
-
-**What happens to Microsoft Authenticator when I get a new phone?**
-
-On your old phone, open the app, go to Settings, and turn on cloud backup. On your new phone, install the app and restore from backup. If you no longer have your old phone, go to [mysignins.microsoft.com/security-info](https://mysignins.microsoft.com/security-info), delete the old Authenticator entry, and set up again.
-
-</div>
-
-<div class="faq-item">
-
-**Can I register more than one method?**
-
-Yes. Each method appears separately on your Security info page. Register at least two so you have a backup.
-
-</div>
-
-<div class="faq-item">
-
-**Can I still use SMS codes?**
-
-Only until 1 February 2027. After that, SMS MFA stops working.
-
-</div>
-
-<div class="faq-item">
-
-**What if I do not want to use a passkey?**
-
-Microsoft Authenticator and TOTP apps are both more secure than SMS. They are valid alternatives. The passkey is recommended because it is fastest and most secure, but it is not required.
+Microsoft Authenticator and TOTP apps work fine. Passkey is recommended because it is fastest, but it is not the only choice.
 
 </div>
