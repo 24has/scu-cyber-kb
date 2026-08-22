@@ -98,6 +98,17 @@ def markdown_to_html(text):
 
     html = re.sub(r"(?:^- .+\n?)+", wrap_ul, html, flags=re.MULTILINE)
 
+    # Numbered lists (lines starting with 1. 2. etc)
+    def wrap_ol(match):
+        items = re.findall(r"^\d+\. (.+)$", match.group(0), re.MULTILINE)
+        wrapped = "<ol>\n"
+        for item in items:
+            wrapped += f"  <li>{item}</li>\n"
+        wrapped += "</ol>"
+        return wrapped
+
+    html = re.sub(r"(?:^\d+\. .+\n?)+", wrap_ol, html, flags=re.MULTILINE)
+
     # Tables: | col | col |
     def wrap_table(match):
         lines = match.group(0).strip().split("\n")
@@ -175,7 +186,48 @@ def markdown_to_html(text):
         block_html = block.replace("\n", " ")
         paragraphs.append(f"<p>{block_html}</p>")
 
-    return "\n\n".join(paragraphs)
+    result = "\n\n".join(paragraphs)
+
+    # FAQ blocks — post-process accordion from <div class="faq"> content
+    # The FAQ div and its contents pass through as-is; convert to accordion HTML
+    def faq_to_accordion(match):
+        inner = match.group(1).strip()
+        # Each Q is a <strong> (maybe inside <p>), followed by answer text/paras
+        # Split on <strong> boundaries — each Q/A pair starts with <strong>
+        parts = re.split(r'(?:\n\n)?(?:<p>)?<strong>', inner)
+        result_html = ""
+        idx = 0
+        for part in parts:
+            part = part.strip()
+            if not part:
+                continue
+            # part is: "Q text</strong> (maybe </p>) then answer paragraphs"
+            end_q = part.find('</strong>')
+            if end_q == -1:
+                continue
+            q = part[:end_q].strip()
+            # Remove trailing </p> if present
+            a_raw = part[end_q + len('</strong>'):].strip()
+            if a_raw.startswith('</p>'):
+                a_raw = a_raw[4:].strip()
+            # Wrap loose answer text in <p> if not already HTML
+            if a_raw and not a_raw.startswith('<'):
+                a_raw = f'<p>{a_raw}</p>'
+            # Clean up stray paragraph breaks
+            a_raw = re.sub(r'<p>\s*</p>', '', a_raw)
+            result_html += f"""
+<div class="faq-item">
+  <button class="faq-q" aria-expanded="false" aria-controls="faq-{idx}">{q}</button>
+  <div class="faq-a" id="faq-{idx}" aria-hidden="true">
+    {a_raw}
+  </div>
+</div>"""
+            idx += 1
+        return result_html
+
+    result = re.sub(r'<div class="faq">(.*?)</div>', faq_to_accordion, result, flags=re.DOTALL)
+
+    return result
 
 
 def build_site():

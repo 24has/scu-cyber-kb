@@ -93,5 +93,17 @@
   </div>
 </footer>
 
+<script>
+// FAQ accordion
+document.querySelectorAll('.faq-q').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var expanded = this.getAttribute('aria-expanded') === 'true';
+    var target = document.getElementById(this.getAttribute('aria-controls'));
+    this.setAttribute('aria-expanded', String(!expanded));
+    target.setAttribute('aria-hidden', String(expanded));
+  });
+});
+</script>
+
 </body>
 </html>
