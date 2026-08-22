@@ -385,16 +385,20 @@ def build_index(sections, by_section, categories, cat_labels):
     content = f"""
     <div class="page-wrapper">
 
-      <div class="home-hero">
+      <section class="home-hero">
         <div class="home-hero__text">
+          <p class="home-hero__eyebrow">Southern Cross University</p>
           <h1>Cyber Security</h1>
-          <p>Information, awareness, and step-by-step guides to help SCU staff and students stay secure.</p>
+          <p class="home-hero__lede">Practical guidance, awareness materials, and how-to guides to help staff and students stay secure online.</p>
+          <div class="home-hero__actions">
+            <a href="/meet-lockie" class="home-hero__cta">Meet Lockie, your guide</a>
+            <a href="/knowledge-base" class="home-hero__cta--ghost">Browse the knowledge base</a>
+          </div>
         </div>
-        <a href="/meet-lockie" class="home-hero__mascot" aria-label="Meet Lockie, your cyber resilience guide">
-          <img src="/assets/lockie.png" alt="Lockie, SCU's cyber resilience mascot" width="110" height="107">
-          <span>Meet Lockie</span>
-        </a>
-      </div>
+        <div class="home-hero__figure" aria-hidden="true">
+          <img src="/assets/lockie.png" alt="" width="217" height="345">
+        </div>
+      </section>
 
       {section_blocks}
 

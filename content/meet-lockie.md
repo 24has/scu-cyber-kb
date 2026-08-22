@@ -9,7 +9,7 @@ applies_to = "All staff and students"
 
 <div class="lockie-intro">
 
-<img src="/assets/lockie.png" alt="Lockie, SCU's cyber resilience mascot" class="lockie-hero" width="185" height="181">
+<img src="/assets/lockie.png" alt="Lockie, SCU's cyber resilience mascot" class="lockie-hero" width="217" height="345">
 
 <div class="lockie-intro__text">
 
