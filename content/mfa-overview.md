@@ -1,11 +1,10 @@
-{
-  "id": "mfa-overview",
-  "title": "Multi-factor authentication (MFA)",
-  "category": "multi-factor-authentication",
-  "updated": "2026-08-22",
-  "applies_to": "All staff and students",
-  "action_required": "1 February 2027"
-}
++++
+id = "mfa-overview"
+title = "Multi-factor authentication (MFA)"
+category = "multi-factor-authentication"
+updated = "2026-08-22"
+applies_to = "All staff and students"
+action_required = "1 February 2027"
 +++
 ## What is changing
 
