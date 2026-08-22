@@ -1,0 +1,43 @@
+{
+  "site": {
+    "title": "Cyber Security Knowledge Base",
+    "description": "Information and guides for staff and students at Southern Cross University.",
+    "base": "https://cyber.scu.edu.au"
+  },
+  "nav": [
+    {"label": "MFA", "category": "multi-factor-authentication"},
+    {"label": "Passwords", "category": "passwords"},
+    {"label": "Phishing", "category": "phishing"},
+    {"label": "Devices", "category": "devices"}
+  ],
+  "articles": [
+    {
+      "id": "mfa-overview",
+      "title": "Multi-factor authentication (MFA)",
+      "category": "multi-factor-authentication",
+      "description": "What is changing, what a passkey is, and your MFA options compared.",
+      "order": 1
+    },
+    {
+      "id": "register-passkey",
+      "title": "How to register a passkey",
+      "category": "multi-factor-authentication",
+      "description": "Step-by-step instructions for setting up a passkey on your device.",
+      "order": 2
+    },
+    {
+      "id": "setup-authenticator",
+      "title": "How to set up Microsoft Authenticator",
+      "category": "multi-factor-authentication",
+      "description": "Use push notifications instead of SMS codes.",
+      "order": 3
+    },
+    {
+      "id": "setup-totp",
+      "title": "How to set up a TOTP app",
+      "category": "multi-factor-authentication",
+      "description": "Use a six-digit code app like Google Authenticator.",
+      "order": 4
+    }
+  ]
+}

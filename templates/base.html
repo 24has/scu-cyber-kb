@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ title }} — SCU Cyber Security</title>
+<meta name="description" content="{{ description }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<div class="top-bar">
+  <div class="top-bar__inner">
+    <a href="https://www.scu.edu.au/current-students">Current students</a>
+    <a href="https://www.scu.edu.au/staff">Staff</a>
+    <a href="https://www.scu.edu.au/alumni">Alumni</a>
+    <a href="https://www.scu.edu.au/library">Library</a>
+  </div>
+</div>
+
+<header class="site-header">
+  <div class="site-header__inner">
+    <a href="/" class="site-header__logo">
+      <img src="/assets/scu-logo.png" alt="Southern Cross University" class="site-header__logo-img" width="100" height="44">
+    </a>
+    <nav class="site-header__nav" aria-label="Main navigation">
+      <a href="https://www.scu.edu.au/study">Study</a>
+      <a href="https://www.scu.edu.au/research">Research</a>
+      <a href="https://www.scu.edu.au/engage">Engage</a>
+      <a href="https://www.scu.edu.au/about">About</a>
+      <a href="/" class="active">Cyber security</a>
+    </nav>
+  </div>
+</header>
+
+<div class="breadcrumbs">
+  <a href="https://www.scu.edu.au">Home</a><span>/</span>
+  <a href="/">Cyber security</a><span>/</span>
+  {{ category_label }}
+</div>
+
+{{ content }}
+
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    <div>
+      <h4>Contact</h4>
+      <p>Technology Services Service Desk<br>
+      <a href="mailto:servicedesk@scu.edu.au">servicedesk@scu.edu.au</a></p>
+    </div>
+    <div>
+      <h4>Quick links</h4>
+      <p><a href="https://www.scu.edu.au/myscu">MySCU</a></p>
+      <p><a href="https://www.scu.edu.au/blackboard">Blackboard</a></p>
+      <p><a href="https://www.scu.edu.au/current-students">Student support</a></p>
+    </div>
+    <div>
+      <h4>Policies</h4>
+      <p><a href="#">MFA Options Policy</a></p>
+      <p><a href="#">Acceptable Use of ICT Resources</a></p>
+      <p><a href="https://www.scu.edu.au/privacy">Privacy</a></p>
+    </div>
+  </div>
+  <div class="site-footer__bottom">
+    <p>Southern Cross University — CRICOS Provider: 01241G — TEQSA Provider Code: PRV12043<br>
+    We acknowledge the Traditional Custodians of the lands on which we live and work.</p>
+  </div>
+</footer>
+
+</body>
+</html>
