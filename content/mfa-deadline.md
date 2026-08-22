@@ -29,13 +29,9 @@ All four are more secure than SMS.
 
 ## Where to start
 
-<a href="/mfa-overview" class="home-cta">Read the MFA overview</a>
+<a href="/mfa" class="home-cta">Read the MFA guide</a>
 
-Or jump straight to the setup guide:
-
-- <a href="/register-passkey">Register a passkey</a>
-- <a href="/setup-authenticator">Set up Microsoft Authenticator</a>
-- <a href="/setup-totp">Set up a TOTP app</a>
+This one guide covers everything: what is changing, the options compared, and step-by-step instructions for passkeys, Microsoft Authenticator, and TOTP apps.
 
 ## Questions
 
