@@ -251,6 +251,22 @@ tbody tr:hover { background: var(--sage-light); }
 /* ── Badge variants ── */
 .badge--alert { background: #dc3545; color: var(--white); }
 
+/* ── Lockie mascot ── */
+.lockie-intro { display: flex; gap: 2rem; align-items: center; margin: 1.5rem 0; }
+.lockie-intro__text { flex: 1; }
+.lockie-hero { border-radius: 50%; flex-shrink: 0; width: 185px; height: auto; box-shadow: 0 4px 20px rgba(3,36,54,.15); }
+.lockie-tips { display: grid; grid-template-columns: 1fr; gap: 0.75rem; margin: 1.5rem 0; }
+.lockie-tip { padding: 1.25rem 1.5rem; border-radius: var(--radius-lg); border: 1px solid var(--border-light); background: var(--sage-light); }
+.lockie-tip strong { display: block; font-family: Montserrat, sans-serif; font-size: 1rem; color: var(--navy); margin-bottom: 0.375rem; }
+.lockie-tip p { margin: 0; }
+@media (max-width: 640px) { .lockie-intro { flex-direction: column; text-align: center; } }
+
+/* ── Section/category landing ── */
+.section-category-heading { font-size: 1.15rem; margin: 1.75rem 0 0.75rem; color: var(--navy); }
+.kb-category-heading { font-size: 1rem; margin: 1.5rem 0 0.5rem; color: var(--navy-dark); }
+.view-all { display: inline-block; font-size: 0.875rem; font-weight: 600; color: var(--navy); text-decoration: none; margin-bottom: 0.75rem; }
+.view-all:hover { color: var(--teal); text-decoration: underline; }
+
 /* ── Utility ── */
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
 .text-gold { color: var(--gold); }

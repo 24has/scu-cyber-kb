@@ -5,8 +5,12 @@ Reads markdown articles from content/ and generates static HTML in dist/.
 
 Usage: python build.py
 
-Edit the markdown files in content/ to update articles.
-Add new articles to content.json to include them.
+Structure:
+  content.json  — sections, categories (subcategories), and article metadata
+  content/*.md  — article bodies with frontmatter
+  templates/    — HTML templates
+  assets/       — CSS, images
+  dist/         — generated site (gitignored)
 """
 
 import json
@@ -20,12 +24,6 @@ TEMPLATES_DIR = ROOT / "templates"
 ASSETS_DIR = ROOT / "assets"
 DIST = ROOT / "dist"
 
-CATEGORY_LABELS = {
-    "announcements": "Announcements",
-    "awareness": "Awareness",
-    "knowledge-base": "Knowledge Base",
-}
-
 
 def load_json(path):
     with open(path, "r", encoding="utf-8") as f:
@@ -35,10 +33,8 @@ def load_json(path):
 def render_template(template_path, variables):
     with open(template_path, "r", encoding="utf-8") as f:
         tpl = f.read()
-
     for key, value in variables.items():
         tpl = tpl.replace("{{ " + key + " }}", value)
-
     return tpl
 
 
@@ -46,8 +42,6 @@ def parse_markdown(text):
     """Parse the frontmatter + markdown body."""
     fm = {}
     body = text
-
-    # Frontmatter (+++ ... +++)
     if text.startswith("+++"):
         end = text.find("+++", 3)
         if end != -1:
@@ -58,7 +52,6 @@ def parse_markdown(text):
                     key, _, val = line.partition("=")
                     fm[key.strip()] = val.strip().strip('"')
             body = text[end + 3 :].strip()
-
     return fm, body
 
 
@@ -79,15 +72,12 @@ def markdown_to_html(text):
     html = re.sub(r"`([^`]+)`", r"<code>\1</code>", html)
 
     # Links [text](url)
-    html = re.sub(
-        r"\[([^\]]+)\]\(([^)]+)\)", r'<a href="\2">\1</a>', html
-    )
+    html = re.sub(r"\[([^\]]+)\]\(([^)]+)\)", r'<a href="\2">\1</a>', html)
 
     # Horizontal rule
     html = re.sub(r"^---$", r"<hr>", html, flags=re.MULTILINE)
 
-    # Unordered lists (lines starting with - )
-    # We need to group contiguous - lines
+    # Unordered lists
     def wrap_ul(match):
         items = re.findall(r"^- (.+)$", match.group(0), re.MULTILINE)
         wrapped = "<ul>\n"
@@ -98,7 +88,7 @@ def markdown_to_html(text):
 
     html = re.sub(r"(?:^- .+\n?)+", wrap_ul, html, flags=re.MULTILINE)
 
-    # Numbered lists (lines starting with 1. 2. etc)
+    # Numbered lists
     def wrap_ol(match):
         items = re.findall(r"^\d+\. (.+)$", match.group(0), re.MULTILINE)
         wrapped = "<ol>\n"
@@ -109,7 +99,7 @@ def markdown_to_html(text):
 
     html = re.sub(r"(?:^\d+\. .+\n?)+", wrap_ol, html, flags=re.MULTILINE)
 
-    # Tables: | col | col |
+    # Tables
     def wrap_table(match):
         lines = match.group(0).strip().split("\n")
         rows = []
@@ -120,10 +110,7 @@ def markdown_to_html(text):
 
         if len(rows) < 2:
             return match.group(0)
-
-        # Skip separator row (---|---|---)
         data_rows = [r for r in rows if not all(re.match(r"^-+$", c) for c in r)]
-
         if len(data_rows) < 2:
             return match.group(0)
 
@@ -142,7 +129,6 @@ def markdown_to_html(text):
         out += "</tbody>\n</table>"
         return out
 
-    # Match table blocks: lines with |col|col|... followed by |---|---|
     html = re.sub(
         r"(?:^\|.+\|\n)+(?:^\|[-: |]+\|\n)(?:^\|.+\|\n?)+",
         wrap_table,
@@ -151,7 +137,6 @@ def markdown_to_html(text):
     )
 
     # Paragraphs: wrap remaining text blocks in <p>
-    # Split by double newlines, preserving HTML blocks
     paragraphs = []
     in_html = False
     html_buf = []
@@ -160,7 +145,6 @@ def markdown_to_html(text):
         if not block:
             continue
 
-        # Track multi-line HTML open/close divs
         is_open = block.startswith("<div") and not block.endswith(">")
         is_close = block == "</div>"
 
@@ -177,23 +161,18 @@ def markdown_to_html(text):
                 in_html = False
             continue
 
-        # Single-line HTML tags pass through
         if block.startswith("<") and block.endswith(">"):
             paragraphs.append(block)
             continue
 
-        # Join single newlines within paragraph, wrap in <p>
         block_html = block.replace("\n", " ")
         paragraphs.append(f"<p>{block_html}</p>")
 
     result = "\n\n".join(paragraphs)
 
-    # FAQ blocks — post-process accordion from <div class="faq"> content
-    # The FAQ div and its contents pass through as-is; convert to accordion HTML
+    # FAQ blocks → accordion
     def faq_to_accordion(match):
         inner = match.group(1).strip()
-        # Each Q is a <strong> (maybe inside <p>), followed by answer text/paras
-        # Split on <strong> boundaries — each Q/A pair starts with <strong>
         parts = re.split(r'(?:\n\n)?(?:<p>)?<strong>', inner)
         result_html = ""
         idx = 0
@@ -201,19 +180,15 @@ def markdown_to_html(text):
             part = part.strip()
             if not part:
                 continue
-            # part is: "Q text</strong> (maybe </p>) then answer paragraphs"
             end_q = part.find('</strong>')
             if end_q == -1:
                 continue
             q = part[:end_q].strip()
-            # Remove trailing </p> if present
             a_raw = part[end_q + len('</strong>'):].strip()
             if a_raw.startswith('</p>'):
                 a_raw = a_raw[4:].strip()
-            # Wrap loose answer text in <p> if not already HTML
             if a_raw and not a_raw.startswith('<'):
                 a_raw = f'<p>{a_raw}</p>'
-            # Clean up stray paragraph breaks
             a_raw = re.sub(r'<p>\s*</p>', '', a_raw)
             result_html += f"""
 <div class="faq-item">
@@ -230,145 +205,182 @@ def markdown_to_html(text):
     return result
 
 
+def _meta_bar(fm):
+    meta_parts = []
+    if fm.get("updated"):
+        meta_parts.append(f"<span>Updated: {fm['updated']}</span>")
+    if fm.get("applies_to"):
+        meta_parts.append(f"<span>Applies to: {fm['applies_to']}</span>")
+    if fm.get("time_required"):
+        meta_parts.append(f"<span>🕐 {fm['time_required']}</span>")
+    if fm.get("action_required"):
+        meta_parts.append(
+            f'<span class="badge badge--gold">Action required by {fm["action_required"]}</span>'
+        )
+    return "\n".join(meta_parts) if meta_parts else ""
+
+
 def build_site():
-    # Clean and recreate dist
     if DIST.exists():
         shutil.rmtree(DIST)
     DIST.mkdir()
-
-    # Copy assets
     shutil.copytree(ASSETS_DIR, DIST / "assets")
 
-    # Load site config
     config = load_json(ROOT / "content.json")
     articles = config["articles"]
-    nav = config["nav"]
+    sections = config["sections"]
+    categories = config["categories"]
 
-    # Group articles by category
-    by_category = {}
+    # Index articles by id
+    by_id = {a["id"]: a for a in articles}
+
+    # Group by section and category
+    by_section = {s["id"]: [] for s in sections}
     for art in articles:
-        cat = art["category"]
-        if cat not in by_category:
-            by_category[cat] = []
-        by_category[cat].append(art)
+        by_section.setdefault(art["section"], []).append(art)
 
-    # Build article pages
+    cat_labels = {}
+    for sec_id, cats in categories.items():
+        for c in cats:
+            cat_labels[c["id"]] = c["label"]
+
+    section_labels = {s["id"]: s["label"] for s in sections}
+
+    # ── Build article pages ──
     for art in articles:
         md_path = CONTENT_DIR / f"{art['id']}.md"
         if not md_path.exists():
             print(f"WARNING: Missing content file {md_path}")
             continue
 
-        with open(md_path, "r", encoding="utf-8") as f:
-            raw = f.read()
-
+        raw = md_path.read_text(encoding="utf-8")
         fm, body = parse_markdown(raw)
         body_html = markdown_to_html(body)
 
-        # Article metadata
         title = art["title"]
-        category = art["category"]
-        cat_label = CATEGORY_LABELS.get(category, category)
+        section = art["section"]
+        section_label = section_labels.get(section, section)
 
-        # Meta bar
-        meta_parts = []
-        if fm.get("updated"):
-            meta_parts.append(f"<span>Updated: {fm['updated']}</span>")
-        if fm.get("applies_to"):
-            meta_parts.append(f"<span>Applies to: {fm['applies_to']}</span>")
-        if fm.get("time_required"):
-            meta_parts.append(f"<span>🕐 {fm['time_required']}</span>")
-        if fm.get("action_required"):
-            meta_parts.append(
-                f'<span class="badge badge--gold">Action required by {fm["action_required"]}</span>'
-            )
-        meta = "\n".join(meta_parts) if meta_parts else ""
-
-        # Sidebar — other articles in same category
+        # Sidebar: other articles in same section, grouped by category
         sidebar = ""
-        for a in sorted(by_category.get(category, []), key=lambda x: x.get("order", 99)):
-            if a["id"] == art["id"]:
-                sidebar += (
-                    f'<li><a href="/{a["id"]}" class="active">{a["title"]}</a></li>\n'
-                )
-            else:
-                sidebar += f'<li><a href="/{a["id"]}">{a["title"]}</a></li>\n'
+        peers = sorted(by_section.get(section, []), key=lambda x: x.get("order", 99))
+        if peers:
+            # group by category
+            grouped = {}
+            for p in peers:
+                cat = p.get("category")
+                key = cat or ""
+                grouped.setdefault(key, []).append(p)
+
+            for cat_id, cat_arts in grouped.items():
+                if cat_id and cat_id in cat_labels:
+                    sidebar += f'<li class="sidebar-nav__heading">{cat_labels[cat_id]}</li>\n'
+                for a in cat_arts:
+                    cls = ' class="active"' if a["id"] == art["id"] else ""
+                    sidebar += f'<li><a href="/{a["id"]}"{cls}>{a["title"]}</a></li>\n'
 
         variables = {
             "title": title,
             "description": art.get("description", ""),
-            "category_label": cat_label,
-            "meta": meta,
+            "section_label": section_label,
+            "meta": _meta_bar(fm),
             "sidebar": sidebar,
             "body": body_html,
         }
 
         html = render_template(TEMPLATES_DIR / "article.html", variables)
         out_path = DIST / f"{art['id']}.html"
-        with open(out_path, "w", encoding="utf-8") as f:
-            f.write(html)
+        out_path.write_text(html, encoding="utf-8")
         print(f"  Built: {out_path}")
 
-    # Build index page
-    index_html = build_index(nav, by_category)
-    with open(DIST / "index.html", "w", encoding="utf-8") as f:
-        f.write(index_html)
+    # ── Build index page ──
+    index_html = build_index(sections, by_section, categories, cat_labels)
+    (DIST / "index.html").write_text(index_html, encoding="utf-8")
     print(f"  Built: {DIST / 'index.html'}")
 
-    # Build 404
-    with open(DIST / "404.html", "w", encoding="utf-8") as f:
-        f.write(index_html)
+    # ── Build section landing pages ──
+    for sec in sections:
+        sec_id = sec["id"]
+        sec_arts = sorted(by_section.get(sec_id, []), key=lambda x: x.get("order", 99))
+        sec_html = build_section_page(sec, sec_arts, categories.get(sec_id, []), cat_labels)
+        (DIST / f"{sec_id}.html").write_text(sec_html, encoding="utf-8")
+        print(f"  Built: {DIST / f'{sec_id}.html'}")
+
+    # ── 404 ──
+    (DIST / "404.html").write_text(index_html, encoding="utf-8")
     print(f"  Built: {DIST / '404.html'}")
 
     print(f"\nDone. Site built to {DIST}")
 
 
-def build_index(nav, by_category):
+def build_index(sections, by_section, categories, cat_labels):
     with open(TEMPLATES_DIR / "base.html", "r", encoding="utf-8") as f:
         tpl = f.read()
 
-    def article_items(arts):
-        items = ""
-        for a in sorted(arts, key=lambda x: x.get("order", 99)):
-            items += f"""<li><a href="/{a['id']}">
-              <span class="article-list__title">{a['title']}</span>
-              <span class="article-list__desc">{a.get('description','')}</span>
-            </a></li>"""
-        return items
+    section_blocks = ""
+    for sec in sections:
+        sec_id = sec["id"]
+        sec_arts = sorted(by_section.get(sec_id, []), key=lambda x: x.get("order", 99))
+        sec_cats = categories.get(sec_id, [])
 
-    # ── Announcements section ──
-    announcements = by_category.get("announcements", [])
-    announcements_html = ""
-    if announcements:
-        for a in sorted(announcements, key=lambda x: x.get("order", 99)):
-            badges = ""
-            if a.get("action_required"):
-                badges += f'<span class="badge badge--alert">{a["action_required"]}</span>'
-            announcements_html += f"""
+        if sec_id == "announcements":
+            # Announcements: highlight cards
+            items = ""
+            for a in sec_arts:
+                badge = ""
+                if a.get("action_required"):
+                    badge = f'<span class="badge badge--alert">{a["action_required"]}</span>'
+                items += f"""
             <a href="/{a['id']}" class="announcement-card">
-              <div class="announcement-card__badges">{badges}</div>
+              <div class="announcement-card__badges">{badge}</div>
               <h3>{a['title']}</h3>
               <p>{a.get('description', '')}</p>
               <span class="announcement-card__action">Read more →</span>
             </a>"""
+            section_blocks += f"""
+      <section class="home-section">
+        <h2 class="home-section__heading">{sec['label']}</h2>
+        <div class="announcement-grid">{items}</div>
+      </section>"""
 
-    # ── Awareness section ──
-    awareness = by_category.get("awareness", [])
-    awareness_html = ""
-    if awareness:
-        for a in sorted(awareness, key=lambda x: x.get("order", 99)):
-            awareness_html += f"""
+        elif sec_id == "awareness":
+            # Awareness: grid of cards
+            items = ""
+            for a in sec_arts:
+                items += f"""
             <a href="/{a['id']}" class="awareness-card">
               <h3>{a['title']}</h3>
               <p>{a.get('description', '')}</p>
             </a>"""
+            section_blocks += f"""
+      <section class="home-section">
+        <h2 class="home-section__heading">{sec['label']}</h2>
+        <div class="awareness-grid">{items}</div>
+      </section>"""
 
-    # ── Knowledge Base section ──
-    kb = by_category.get("knowledge-base", [])
-    kb_html = ""
-    if kb:
-        kb_articles = sorted(kb, key=lambda x: x.get("order", 99))
-        kb_html = f'<ul class="article-list">\n{article_items(kb_articles)}</ul>'
+        else:
+            # Knowledge base: grouped list by category
+            grouped = {}
+            for a in sec_arts:
+                grouped.setdefault(a.get("category", ""), []).append(a)
+
+            kb_html = ""
+            for cat_id, cat_arts in grouped.items():
+                label = cat_labels.get(cat_id, "Other")
+                kb_html += f'<h3 class="kb-category-heading">{label}</h3>\n<ul class="article-list">\n'
+                for a in cat_arts:
+                    kb_html += f"""<li><a href="/{a['id']}">
+              <span class="article-list__title">{a['title']}</span>
+              <span class="article-list__desc">{a.get('description','')}</span>
+            </a></li>"""
+                kb_html += "</ul>\n"
+
+            section_blocks += f"""
+      <section class="home-section">
+        <h2 class="home-section__heading">{sec['label']}</h2>
+        <a href="/{sec_id}" class="view-all">View all →</a>
+        {kb_html}
+      </section>"""
 
     content = f"""
     <div class="page-wrapper">
@@ -378,41 +390,60 @@ def build_index(nav, by_category):
         <p>Information, awareness, and step-by-step guides to help SCU staff and students stay secure.</p>
       </div>
 
-      <!-- ═══ ANNOUNCEMENTS ═══ -->
-      <section class="home-section">
-        <h2 class="home-section__heading">Announcements</h2>
-        <div class="announcement-grid">
-          {announcements_html}
-        </div>
-      </section>
-
-      <!-- ═══ AWARENESS ═══ -->
-      <section class="home-section">
-        <h2 class="home-section__heading">Awareness</h2>
-        <div class="awareness-grid">
-          {awareness_html}
-        </div>
-      </section>
-
-      <!-- ═══ KNOWLEDGE BASE ═══ -->
-      <section class="home-section">
-        <h2 class="home-section__heading">Knowledge Base</h2>
-        {kb_html}
-      </section>
+      {section_blocks}
 
     </div>"""
 
     variables = {
         "title": "Cyber Security",
         "description": "Cyber security information and guides for SCU staff and students.",
-        "category_label": "Home",
+        "section_label": "Home",
         "content": content,
     }
+    return render_template(TEMPLATES_DIR / "base.html", variables)
 
-    for key, value in variables.items():
-        tpl = tpl.replace("{{ " + key + " }}", value)
 
-    return tpl
+def build_section_page(section, section_articles, section_categories, cat_labels):
+    with open(TEMPLATES_DIR / "base.html", "r", encoding="utf-8") as f:
+        tpl = f.read()
+
+    label = section["label"]
+
+    # Group articles by category
+    grouped = {}
+    for a in section_articles:
+        grouped.setdefault(a.get("category", ""), []).append(a)
+
+    body = ""
+    if section_articles:
+        for cat_id, cat_arts in grouped.items():
+            cat_label = cat_labels.get(cat_id, "Other")
+            body += f'<h2 class="section-category-heading">{cat_label}</h2>\n<ul class="article-list">\n'
+            for a in cat_arts:
+                body += f"""<li><a href="/{a['id']}">
+              <span class="article-list__title">{a['title']}</span>
+              <span class="article-list__desc">{a.get('description','')}</span>
+            </a></li>"""
+            body += "</ul>\n"
+    else:
+        body = "<p>Nothing here yet.</p>"
+
+    content = f"""
+    <div class="page-wrapper">
+      <div class="page-banner">
+        <h1>{label}</h1>
+        <div class="page-banner__meta"><span>{len(section_articles)} article{'s' if len(section_articles) != 1 else ''}</span></div>
+      </div>
+      {body}
+    </div>"""
+
+    variables = {
+        "title": label,
+        "description": f"{label} — SCU Cyber Security",
+        "section_label": label,
+        "content": content,
+    }
+    return render_template(TEMPLATES_DIR / "base.html", variables)
 
 
 if __name__ == "__main__":

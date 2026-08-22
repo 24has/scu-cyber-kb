@@ -3,68 +3,73 @@
     "title": "Cyber Security",
     "description": "Cyber security information, awareness materials, and knowledge base for SCU staff and students."
   },
-  "nav": [
-    {"label": "Announcements", "category": "announcements"},
-    {"label": "Awareness", "category": "awareness"},
-    {"label": "Knowledge Base", "category": "knowledge-base"}
+  "sections": [
+    {"id": "announcements", "label": "Announcements"},
+    {"id": "awareness", "label": "Awareness"},
+    {"id": "knowledge-base", "label": "Knowledge Base"}
   ],
+  "categories": {
+    "announcements": [],
+    "awareness": [
+      {"id": "campaigns", "label": "Campaigns"},
+      {"id": "posters", "label": "Posters"},
+      {"id": "tips", "label": "Security tips"}
+    ],
+    "knowledge-base": [
+      {"id": "mfa", "label": "Multi-factor authentication"},
+      {"id": "passwords", "label": "Passwords"},
+      {"id": "phishing", "label": "Phishing"},
+      {"id": "devices", "label": "Devices"}
+    ]
+  },
   "articles": [
     {
       "id": "mfa-deadline",
       "title": "SMS MFA is being switched off — 1 Feb 2027",
-      "category": "announcements",
+      "section": "announcements",
       "description": "All staff and students must move to a new MFA method. Here is what is happening and what you need to do.",
       "action_required": "Action required by 1 Feb 2027",
       "order": 1
     },
     {
+      "id": "meet-lockie",
+      "title": "Meet Lockie — your cyber resilience guide",
+      "section": "awareness",
+      "category": "campaigns",
+      "description": "Lockie shares practical tips to help you build secure habits.",
+      "order": 1
+    },
+    {
       "id": "staying-safe-online",
       "title": "Staying safe online",
-      "category": "awareness",
+      "section": "awareness",
+      "category": "tips",
       "description": "Passwords, phishing, device updates, public Wi-Fi, and backing up your work.",
-      "order": 1
+      "order": 2
     },
     {
       "id": "spot-phishing",
       "title": "How to spot a phishing email",
-      "category": "awareness",
+      "section": "awareness",
+      "category": "tips",
       "description": "The six signs that an email is a scam, and what to do when you find one.",
-      "order": 2
+      "order": 3
     },
     {
       "id": "awareness-posters",
       "title": "Print and display",
-      "category": "awareness",
+      "section": "awareness",
+      "category": "posters",
       "description": "Download and print awareness posters for your office, common room, or classroom.",
-      "order": 3
-    },
-    {
-      "id": "mfa-overview",
-      "title": "What is MFA and what is changing",
-      "category": "knowledge-base",
-      "description": "Why SMS is going away, what a passkey is, and your options compared.",
-      "order": 1
-    },
-    {
-      "id": "register-passkey",
-      "title": "Register a passkey",
-      "category": "knowledge-base",
-      "description": "Set up a passkey on your laptop, phone, or security key. About 5 minutes.",
-      "order": 2
-    },
-    {
-      "id": "setup-authenticator",
-      "title": "Set up Microsoft Authenticator",
-      "category": "knowledge-base",
-      "description": "Use push notifications on your phone instead of SMS codes.",
-      "order": 3
-    },
-    {
-      "id": "setup-totp",
-      "title": "Set up a TOTP app",
-      "category": "knowledge-base",
-      "description": "Use Google Authenticator or another code-generating app. Works on desktop too.",
       "order": 4
+    },
+    {
+      "id": "mfa",
+      "title": "Multi-factor authentication (MFA)",
+      "section": "knowledge-base",
+      "category": "mfa",
+      "description": "Why SMS is going away, your options compared, and how to set each one up.",
+      "order": 1
     }
   ]
 }
