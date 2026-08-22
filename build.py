@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Build script for SCU Cyber Security Knowledge Base.
+Build script for SCU Cyber Resilience Knowledge Base.
 Reads markdown articles from content/ and generates static HTML in dist/.
 
 Usage: python build.py
@@ -464,7 +464,7 @@ def build_index(sections, by_section, categories, cat_labels, report_incident=No
       <section class="home-hero">
         <div class="home-hero__text">
           <p class="home-hero__eyebrow">Southern Cross University</p>
-          <h1>Cyber Security</h1>
+          <h1>Cyber Resilience</h1>
           <p class="home-hero__lede">Practical guidance, awareness materials, and how-to guides to help staff and students stay secure online.</p>
           <div class="home-hero__actions">
             <a href="/meet-lockie" class="home-hero__cta">Meet Lockie, your guide</a>
@@ -485,7 +485,7 @@ def build_index(sections, by_section, categories, cat_labels, report_incident=No
     </div>"""
 
     variables = {
-        "title": "Cyber Security",
+        "title": "Cyber Resilience",
         "description": "Cyber security information and guides for SCU staff and students.",
         "section_label": "Home",
         "content": content,
@@ -544,7 +544,7 @@ def build_section_page(section, section_articles, section_categories, cat_labels
 
     variables = {
         "title": label,
-        "description": f"{label} — SCU Cyber Security",
+        "description": f"{label} — SCU Cyber Resilience",
         "section_label": label,
         "content": content,
         "search_box": search_box_html(),

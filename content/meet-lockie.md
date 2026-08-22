@@ -73,6 +73,6 @@ Only access, share, and store university information in approved locations. Use 
 
 ## Where you will see Lockie
 
-Lockie appears across SCU cyber awareness materials — on posters, in emails, on digital signage, and here on the cyber security site. Each time you see Lockie, there is a tip or reminder worth reading.
+Lockie appears across SCU cyber awareness materials — on posters, in emails, on digital signage, and here on the cyber resilience site. Each time you see Lockie, there is a tip or reminder worth reading.
 
 New tips and materials are added regularly. Check back or follow the Technology Services communications for updates.

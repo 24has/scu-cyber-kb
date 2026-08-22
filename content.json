@@ -1,6 +1,6 @@
 {
   "site": {
-    "title": "Cyber Security",
+    "title": "Cyber Resilience",
     "description": "Cyber security information, awareness materials, and knowledge base for SCU staff and students."
   },
   "report_incident": {
@@ -24,7 +24,7 @@
       "contact": "servicedesk@scu.edu.au"
     },
     "cyber_team": {
-      "label": "Cyber Security team",
+      "label": "Cyber Resilience team",
       "description": "Security advice, threat assessment, and policy questions.",
       "url": "https://scu.atlassian.net/servicedesk/customer/portal/13",
       "contact": "cyber@scu.edu.au"

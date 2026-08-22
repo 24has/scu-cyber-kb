@@ -1,6 +1,6 @@
-# SCU Cyber Security Knowledge Base
+# SCU Cyber Resilience Knowledge Base
 
-Mockup knowledge base for Southern Cross University cyber security content.
+Mockup knowledge base for Southern Cross University cyber resilience content.
 Static site built from markdown → deployed to Cloudflare Pages.
 
 ## Editing content

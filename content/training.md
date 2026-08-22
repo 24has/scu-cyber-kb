@@ -9,7 +9,7 @@ applies_to = "All staff and students"
 
 ## Mandatory training
 
-All SCU staff and students complete cyber security training each year. It covers phishing, passwords, safe browsing, and incident reporting.
+All SCU staff and students complete cyber resilience training each year. It covers phishing, passwords, safe browsing, and incident reporting.
 
 Training is delivered online and takes about 30 minutes. You will receive an email when your training is due.
 
