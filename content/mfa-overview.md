@@ -1,7 +1,7 @@
 +++
 id = "mfa-overview"
 title = "Multi-factor authentication (MFA)"
-category = "multi-factor-authentication"
+category = "knowledge-base"
 updated = "2026-08-22"
 applies_to = "All staff and students"
 action_required = "1 February 2027"

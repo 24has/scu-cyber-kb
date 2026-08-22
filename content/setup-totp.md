@@ -1,7 +1,7 @@
 +++
 id = "setup-totp"
 title = "Set up a TOTP app"
-category = "multi-factor-authentication"
+category = "knowledge-base"
 updated = "2026-08-22"
 applies_to = "All staff and students"
 time_required = "About 5 minutes"

@@ -21,12 +21,9 @@ ASSETS_DIR = ROOT / "assets"
 DIST = ROOT / "dist"
 
 CATEGORY_LABELS = {
-    "multi-factor-authentication": "Multi-factor authentication",
-    "cyber-awareness": "Cyber awareness",
-    "posters": "Awareness posters",
-    "passwords": "Passwords",
-    "phishing": "Phishing",
-    "devices": "Devices",
+    "announcements": "Announcements",
+    "awareness": "Awareness",
+    "knowledge-base": "Knowledge Base",
 }
 
 
@@ -278,49 +275,79 @@ def build_index(nav, by_category):
     with open(TEMPLATES_DIR / "base.html", "r", encoding="utf-8") as f:
         tpl = f.read()
 
-    # Build category cards
-    cards = ""
-    for item in nav:
-        cat = item["category"]
-        cat_articles = by_category.get(cat, [])
-        count = len(cat_articles)
-        label = CATEGORY_LABELS.get(cat, cat)
+    def article_items(arts):
+        items = ""
+        for a in sorted(arts, key=lambda x: x.get("order", 99)):
+            items += f"""<li><a href="/{a['id']}">
+              <span class="article-list__title">{a['title']}</span>
+              <span class="article-list__desc">{a.get('description','')}</span>
+            </a></li>"""
+        return items
 
-        if count == 0:
-            cards += f"""
-            <a href="#" class="category-card" style="opacity:.5">
-              <h3>{label}</h3>
-              <p>Coming soon</p>
-              <div class="category-card__count">0 articles</div>
+    # ── Announcements section ──
+    announcements = by_category.get("announcements", [])
+    announcements_html = ""
+    if announcements:
+        for a in sorted(announcements, key=lambda x: x.get("order", 99)):
+            badges = ""
+            if a.get("action_required"):
+                badges += f'<span class="badge badge--alert">{a["action_required"]}</span>'
+            announcements_html += f"""
+            <a href="/{a['id']}" class="announcement-card">
+              <div class="announcement-card__badges">{badges}</div>
+              <h3>{a['title']}</h3>
+              <p>{a.get('description', '')}</p>
+              <span class="announcement-card__action">Read more →</span>
             </a>"""
-        else:
-            first_art = cat_articles[0]
-            cards += f"""
-            <a href="/{first_art['id']}" class="category-card">
-              <h3>{label}</h3>
-              <p>{item.get('label', '')}</p>
-              <ul class="article-list" style="margin-top:1rem">
-            """
-            for art in sorted(cat_articles, key=lambda x: x.get("order", 99)):
-                cards += f"""<li><a href="/{art['id']}">
-                  <span class="article-list__title">{art['title']}</span>
-                  <span class="article-list__desc">{art.get('description','')}</span>
-                </a></li>"""
-            cards += f"""
-              </ul>
-              <div class="category-card__count">{count} article{'s' if count != 1 else ''}</div>
+
+    # ── Awareness section ──
+    awareness = by_category.get("awareness", [])
+    awareness_html = ""
+    if awareness:
+        for a in sorted(awareness, key=lambda x: x.get("order", 99)):
+            awareness_html += f"""
+            <a href="/{a['id']}" class="awareness-card">
+              <h3>{a['title']}</h3>
+              <p>{a.get('description', '')}</p>
             </a>"""
+
+    # ── Knowledge Base section ──
+    kb = by_category.get("knowledge-base", [])
+    kb_html = ""
+    if kb:
+        kb_articles = sorted(kb, key=lambda x: x.get("order", 99))
+        kb_html = f'<ul class="article-list">\n{article_items(kb_articles)}</ul>'
 
     content = f"""
     <div class="page-wrapper">
+
       <div class="home-hero">
-        <h1>Cyber Security Knowledge Base</h1>
-        <p>Information and step-by-step guides to help SCU staff and students stay secure online.</p>
+        <h1>Cyber Security</h1>
+        <p>Information, awareness, and step-by-step guides to help SCU staff and students stay secure.</p>
       </div>
 
-      <div class="category-grid">
-        {cards}
-      </div>
+      <!-- ═══ ANNOUNCEMENTS ═══ -->
+      <section class="home-section">
+        <h2 class="home-section__heading">Announcements</h2>
+        <div class="announcement-grid">
+          {announcements_html}
+        </div>
+      </section>
+
+      <!-- ═══ AWARENESS ═══ -->
+      <section class="home-section">
+        <h2 class="home-section__heading">Awareness</h2>
+        <div class="awareness-grid">
+          {awareness_html}
+        </div>
+      </section>
+
+      <!-- ═══ KNOWLEDGE BASE ═══ -->
+      <section class="home-section">
+        <h2 class="home-section__heading">Knowledge Base</h2>
+        {kb_html}
+      </section>
+
     </div>"""
 
     variables = {

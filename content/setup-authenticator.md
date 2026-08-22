@@ -1,7 +1,7 @@
 +++
 id = "setup-authenticator"
 title = "Set up Microsoft Authenticator"
-category = "multi-factor-authentication"
+category = "knowledge-base"
 updated = "2026-08-22"
 applies_to = "All staff and students"
 time_required = "About 5 minutes"

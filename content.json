@@ -1,62 +1,70 @@
 {
   "site": {
-    "title": "Cyber Security Knowledge Base",
-    "description": "Information and guides for staff and students at Southern Cross University."
+    "title": "Cyber Security",
+    "description": "Cyber security information, awareness materials, and knowledge base for SCU staff and students."
   },
   "nav": [
-    {"label": "Multi-factor authentication", "category": "multi-factor-authentication"},
-    {"label": "Cyber awareness", "category": "cyber-awareness"},
-    {"label": "Awareness posters", "category": "posters"}
+    {"label": "Announcements", "category": "announcements"},
+    {"label": "Awareness", "category": "awareness"},
+    {"label": "Knowledge Base", "category": "knowledge-base"}
   ],
   "articles": [
     {
-      "id": "mfa-overview",
-      "title": "What is MFA and what is changing",
-      "category": "multi-factor-authentication",
-      "description": "Why SMS is going away, what a passkey is, and your MFA options compared.",
+      "id": "mfa-deadline",
+      "title": "SMS MFA is being switched off — 1 Feb 2027",
+      "category": "announcements",
+      "description": "All staff and students must move to a new MFA method. Here is what is happening and what you need to do.",
+      "action_required": "Action required by 1 Feb 2027",
       "order": 1
-    },
-    {
-      "id": "register-passkey",
-      "title": "Register a passkey",
-      "category": "multi-factor-authentication",
-      "description": "Set up a passkey on your laptop, phone, or security key. About 5 minutes.",
-      "order": 2
-    },
-    {
-      "id": "setup-authenticator",
-      "title": "Set up Microsoft Authenticator",
-      "category": "multi-factor-authentication",
-      "description": "Use push notifications on your phone instead of SMS codes.",
-      "order": 3
-    },
-    {
-      "id": "setup-totp",
-      "title": "Set up a TOTP app",
-      "category": "multi-factor-authentication",
-      "description": "Use Google Authenticator or another code-generating app. Works on desktop too.",
-      "order": 4
     },
     {
       "id": "staying-safe-online",
       "title": "Staying safe online",
-      "category": "cyber-awareness",
+      "category": "awareness",
       "description": "Passwords, phishing, device updates, public Wi-Fi, and backing up your work.",
       "order": 1
     },
     {
       "id": "spot-phishing",
       "title": "How to spot a phishing email",
-      "category": "cyber-awareness",
+      "category": "awareness",
       "description": "The six signs that an email is a scam, and what to do when you find one.",
       "order": 2
     },
     {
       "id": "awareness-posters",
       "title": "Print and display",
-      "category": "posters",
+      "category": "awareness",
       "description": "Download and print awareness posters for your office, common room, or classroom.",
+      "order": 3
+    },
+    {
+      "id": "mfa-overview",
+      "title": "What is MFA and what is changing",
+      "category": "knowledge-base",
+      "description": "Why SMS is going away, what a passkey is, and your options compared.",
       "order": 1
+    },
+    {
+      "id": "register-passkey",
+      "title": "Register a passkey",
+      "category": "knowledge-base",
+      "description": "Set up a passkey on your laptop, phone, or security key. About 5 minutes.",
+      "order": 2
+    },
+    {
+      "id": "setup-authenticator",
+      "title": "Set up Microsoft Authenticator",
+      "category": "knowledge-base",
+      "description": "Use push notifications on your phone instead of SMS codes.",
+      "order": 3
+    },
+    {
+      "id": "setup-totp",
+      "title": "Set up a TOTP app",
+      "category": "knowledge-base",
+      "description": "Use Google Authenticator or another code-generating app. Works on desktop too.",
+      "order": 4
     }
   ]
 }

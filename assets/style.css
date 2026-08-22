@@ -188,6 +188,50 @@ tbody tr:hover { background: var(--sage-light); }
 .faq p { margin-bottom: 0.75rem; }
 .faq p strong { display: block; margin-bottom: 0.25rem; font-family: Montserrat, sans-serif; }
 
+/* ── Homepage: announcements ── */
+.announcement-grid { display: flex; flex-direction: column; gap: 1rem; margin: 0 0 2rem; }
+.announcement-card {
+  display: block; padding: 1.5rem 1.75rem; border-radius: var(--radius-lg);
+  border: 2px solid var(--gold); background: linear-gradient(135deg, #FFFDF5 0%, #FFF8D0 100%);
+  text-decoration: none; color: var(--text); transition: box-shadow .15s, transform .15s;
+}
+.announcement-card:hover { box-shadow: 0 4px 20px rgba(3,36,54,.1); transform: translateY(-1px); color: var(--text); }
+.announcement-card h3 { font-size: 1.15rem; margin: 0 0 0.375rem; color: var(--navy-dark); }
+.announcement-card p { font-size: 0.9375rem; color: var(--text-muted); margin: 0; }
+.announcement-card__badges { margin-bottom: 0.5rem; }
+.announcement-card__action { font-size: 0.8125rem; color: var(--navy); font-weight: 600; display: inline-block; margin-top: 0.75rem; }
+
+/* ── Homepage: awareness cards ── */
+.awareness-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.25rem; margin: 0 0 2rem; }
+.awareness-card {
+  display: block; padding: 1.5rem; border-radius: var(--radius-lg);
+  border: 1px solid var(--border-light); background: var(--white);
+  box-shadow: 0 2px 12px rgba(3,36,54,.06);
+  text-decoration: none; color: var(--text); transition: box-shadow .15s, transform .15s;
+}
+.awareness-card:hover { box-shadow: 0 4px 20px rgba(3,36,54,.1); transform: translateY(-2px); color: var(--text); }
+.awareness-card h3 { font-size: 1.05rem; margin: 0 0 0.375rem; color: var(--navy); }
+.awareness-card p { font-size: 0.875rem; color: var(--text-muted); margin: 0; }
+
+/* ── Homepage section headings ── */
+.home-section { margin-bottom: 2rem; }
+.home-section__heading {
+  font-size: 0.8125rem; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--text-muted); font-family: Montserrat, sans-serif; font-weight: 600;
+  margin: 0 0 1rem; padding: 0; border: none;
+}
+
+/* ── Homepage CTA button ── */
+.home-cta {
+  display: inline-block; padding: 0.625rem 1.25rem; border-radius: var(--radius);
+  background: var(--navy); color: var(--white); text-decoration: none;
+  font-weight: 600; font-size: 0.9375rem;
+}
+.home-cta:hover { background: var(--teal); color: var(--white); }
+
+/* ── Badge variants ── */
+.badge--alert { background: #dc3545; color: var(--white); }
+
 /* ── Utility ── */
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
 .text-gold { color: var(--gold); }

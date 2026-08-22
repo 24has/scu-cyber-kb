@@ -1,7 +1,7 @@
 +++
 id = "awareness-posters"
 title = "Awareness posters"
-category = "posters"
+category = "awareness"
 updated = "2026-08-22"
 applies_to = "All staff and students"
 +++
