@@ -58,7 +58,7 @@
       {"id": "remote-access", "label": "Remote access"},
       {"id": "data-handling", "label": "Data handling"},
       {"id": "software-security", "label": "Software security"},
-      {"id": "acceptable-use", "label": "Acceptable use"}
+      {"id": "policy", "label": "Policy"}
     ]
   },
   "articles": [
@@ -182,10 +182,10 @@
       "order": 7
     },
     {
-      "id": "acceptable-use",
+      "id": "policy",
       "title": "Acceptable use of ICT",
       "section": "knowledge-base",
-      "category": "acceptable-use",
+      "category": "policy",
       "audience": ["staff", "students"],
       "description": "What is and is not allowed when using SCU systems and devices.",
       "order": 8

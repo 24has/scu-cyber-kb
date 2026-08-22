@@ -2,7 +2,7 @@
 id = "acceptable-use"
 title = "Acceptable use of ICT"
 category = "knowledge-base"
-subcategory = "acceptable-use"
+subcategory = "policy"
 updated = "2026-08-22"
 applies_to = "All staff and students"
 +++
