@@ -360,35 +360,41 @@ def build_index(sections, by_section, categories, cat_labels, report_incident=No
       </section>"""
 
         else:
-            # Knowledge base: grouped list by category
+            # Knowledge base: compact card grid of categories (not full article list)
             grouped = {}
             for a in sec_arts:
                 grouped.setdefault(a.get("category", ""), []).append(a)
 
-            kb_html = ""
-            for cat_id, cat_arts in grouped.items():
-                label = cat_labels.get(cat_id, "Other")
-                kb_html += f'<h3 class="kb-category-heading">{label}</h3>\n<ul class="article-list">\n'
-                for a in cat_arts:
-                    kb_html += f"""<li><a href="/{a['id']}">
-              <span class="article-list__title">{a['title']}</span>
-              <span class="article-list__desc">{a.get('description','')}</span>
-            </a></li>"""
-                kb_html += "</ul>\n"
+            kb_html = '<div class="kb-card-grid">'
+            for cat in sec_cats:
+                cat_id = cat["id"]
+                cat_arts = grouped.get(cat_id, [])
+                if not cat_arts:
+                    continue
+                first = cat_arts[0]
+                kb_html += f"""
+            <a href="/knowledge-base#{cat_id}" class="kb-card">
+              <h3>{cat['label']}</h3>
+              <p>{first.get('description', '')}</p>
+              <span class="kb-card__count">{len(cat_arts)} article{'s' if len(cat_arts) != 1 else ''}</span>
+            </a>"""
+            kb_html += "</div>"
 
             section_blocks += f"""
       <section class="home-section">
         <h2 class="home-section__heading">{sec['label']}</h2>
-        <a href="/{sec_id}" class="view-all">View all →</a>
         {kb_html}
       </section>"""
 
     # ── Report a cyber incident section ──
     report_incident_html = ""
     if report_incident:
-        bullets = "\n".join(f"<li>{item}</li>" for item in report_incident.get("what_to_include", []))
+        bullets = "\n".join(f"""<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>{item}</span></li>""" for item in report_incident.get("what_to_include", []))
         report_incident_html = f"""
       <section class="report-incident">
+        <div class="report-incident__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.2 7.7-8 9-4.8-1.3-8-4.5-8-9V6l8-3z"/><path d="M12 9v4"/><path d="M12 16.5h.01"/></svg>
+        </div>
         <div class="report-incident__text">
           <h2 class="report-incident__title">{report_incident.get('title', 'Report a cyber incident')}</h2>
           <p class="report-incident__intro">{report_incident.get('intro', '')}</p>
@@ -440,17 +446,31 @@ def build_section_page(section, section_articles, section_categories, cat_labels
 
     label = section["label"]
 
-    # Group articles by category
+    # Group articles by category, preserving category config order
     grouped = {}
     for a in section_articles:
         grouped.setdefault(a.get("category", ""), []).append(a)
 
     body = ""
     if section_articles:
-        for cat_id, cat_arts in grouped.items():
+        cat_order = [c["id"] for c in section_categories] if section_categories else list(grouped.keys())
+        for cat_id in cat_order:
+            cat_arts = grouped.get(cat_id)
+            if not cat_arts:
+                continue
             cat_label = cat_labels.get(cat_id, "Other")
-            body += f'<h2 class="section-category-heading">{cat_label}</h2>\n<ul class="article-list">\n'
+            body += f'<h2 class="section-category-heading" id="{cat_id}">{cat_label}</h2>\n<ul class="article-list">\n'
             for a in cat_arts:
+                body += f"""<li><a href="/{a['id']}">
+              <span class="article-list__title">{a['title']}</span>
+              <span class="article-list__desc">{a.get('description','')}</span>
+            </a></li>"""
+            body += "</ul>\n"
+        # Uncategorized leftovers
+        leftovers = [a for a in section_articles if not a.get("category") or a["category"] not in cat_order]
+        if leftovers:
+            body += '<h2 class="section-category-heading" id="other">Other</h2>\n<ul class="article-list">\n'
+            for a in leftovers:
                 body += f"""<li><a href="/{a['id']}">
               <span class="article-list__title">{a['title']}</span>
               <span class="article-list__desc">{a.get('description','')}</span>
