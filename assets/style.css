@@ -413,6 +413,35 @@ tbody tr:hover { background: var(--sage-light); }
 .kb-card p { font-size: 0.875rem; color: var(--text-muted); margin: 0 0 0.75rem; }
 .kb-card__count { font-size: 0.75rem; color: var(--navy); font-weight: 600; text-transform: uppercase; letter-spacing: .05em; }
 
+/* ── Search ── */
+.search-box { display: flex; align-items: center; gap: 0.375rem; margin-right: 1rem; }
+.search-box input {
+  padding: 0.375rem 0.75rem; border: 1px solid var(--border); border-radius: var(--radius);
+  font-family: inherit; font-size: 0.875rem; width: 180px; transition: border-color .15s;
+}
+.search-box input:focus { outline: none; border-color: var(--navy); }
+.search-box button {
+  padding: 0.375rem 0.625rem; border: none; background: var(--navy); color: var(--white);
+  border-radius: var(--radius); cursor: pointer; display: flex; align-items: center; justify-content: center;
+}
+.search-box button:hover { background: var(--teal); }
+.search-results { margin-top: 2rem; }
+
+/* ── Help cards ── */
+.help-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; }
+.help-card {
+  display: block; padding: 1.5rem; border-radius: var(--radius-lg);
+  border: 1px solid var(--border-light); background: var(--white);
+  text-decoration: none; color: var(--text); transition: box-shadow .15s, transform .15s;
+}
+.help-card:hover { box-shadow: 0 4px 20px rgba(3,36,54,.1); transform: translateY(-2px); }
+.help-card h3 { font-size: 1rem; margin: 0 0 0.375rem; color: var(--navy); }
+.help-card p { font-size: 0.875rem; color: var(--text-muted); margin: 0 0 0.75rem; }
+.help-card__contact { font-size: 0.8125rem; color: var(--navy); font-weight: 600; }
+
+/* ── Badge audience ── */
+.badge--audience { background: var(--sage); color: var(--navy); font-size: 0.75rem; }
+
 /* ── Utility ── */
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
 .text-gold { color: var(--gold); }

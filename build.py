@@ -231,6 +231,7 @@ def build_site():
     sections = config["sections"]
     categories = config["categories"]
     report_incident = config.get("report_incident", {})
+    help_config = config.get("help", {})
 
     # Index articles by id
     by_id = {a["id"]: a for a in articles}
@@ -280,13 +281,20 @@ def build_site():
                     cls = ' class="active"' if a["id"] == art["id"] else ""
                     sidebar += f'<li><a href="/{a["id"]}"{cls}>{a["title"]}</a></li>\n'
 
+        badges = []
+        if art.get("audience"):
+            for aud in art["audience"]:
+                badges.append(f'<span class="badge badge--audience">{aud.title()}</span>')
+        badge_html = " ".join(badges) if badges else ""
+
         variables = {
             "title": title,
             "description": art.get("description", ""),
             "section_label": section_label,
-            "meta": _meta_bar(fm),
+            "meta": _meta_bar(fm) + (" " + badge_html if badge_html else ""),
             "sidebar": sidebar,
             "body": body_html,
+            "badges": badge_html,
         }
 
         html = render_template(TEMPLATES_DIR / "article.html", variables)
@@ -294,8 +302,23 @@ def build_site():
         out_path.write_text(html, encoding="utf-8")
         print(f"  Built: {out_path}")
 
+    # ── Build search index ──
+    search_index = []
+    for art in articles:
+        search_index.append({
+            "id": art["id"],
+            "title": art["title"],
+            "description": art.get("description", ""),
+            "section": art["section"],
+            "category": art.get("category", ""),
+            "audience": art.get("audience", []),
+        })
+    import json as _json
+    (DIST / "search.json").write_text(_json.dumps(search_index), encoding="utf-8")
+    print(f"  Built: {DIST / 'search.json'}")
+
     # ── Build index page ──
-    index_html = build_index(sections, by_section, categories, cat_labels, report_incident)
+    index_html = build_index(sections, by_section, categories, cat_labels, report_incident, help_config, articles, cat_labels)
     (DIST / "index.html").write_text(index_html, encoding="utf-8")
     print(f"  Built: {DIST / 'index.html'}")
 
@@ -314,7 +337,10 @@ def build_site():
     print(f"\nDone. Site built to {DIST}")
 
 
-def build_index(sections, by_section, categories, cat_labels, report_incident=None):
+def search_box_html():
+    return '<div class="search-box"><input type="search" id="site-search" placeholder="Search..." aria-label="Search this site"><button type="submit" aria-label="Search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></button></div>'
+
+def build_index(sections, by_section, categories, cat_labels, report_incident=None, help_config=None, all_articles=None, cat_labels_for_search=None):
     with open(TEMPLATES_DIR / "base.html", "r", encoding="utf-8") as f:
         tpl = f.read()
 
@@ -386,6 +412,31 @@ def build_index(sections, by_section, categories, cat_labels, report_incident=No
         {kb_html}
       </section>"""
 
+    # ── Get help section ──
+    help_html = ""
+    if help_config:
+        help_html = f"""
+      <section class="home-section">
+        <h2 class="home-section__heading">Get help</h2>
+        <div class="help-grid">
+          <a href="{help_config['service_desk']['url']}" class="help-card">
+            <h3>{help_config['service_desk']['label']}</h3>
+            <p>{help_config['service_desk']['description']}</p>
+            <span class="help-card__contact">{help_config['service_desk']['contact']}</span>
+          </a>
+          <a href="{help_config['cyber_team']['url']}" class="help-card">
+            <h3>{help_config['cyber_team']['label']}</h3>
+            <p>{help_config['cyber_team']['description']}</p>
+            <span class="help-card__contact">{help_config['cyber_team']['contact']}</span>
+          </a>
+          <a href="{help_config['exception']['url']}" class="help-card">
+            <h3>{help_config['exception']['label']}</h3>
+            <p>{help_config['exception']['description']}</p>
+            <span class="help-card__contact">Request →</span>
+          </a>
+        </div>
+      </section>"""
+
     # ── Report a cyber incident section ──
     report_incident_html = ""
     if report_incident:
@@ -427,6 +478,8 @@ def build_index(sections, by_section, categories, cat_labels, report_incident=No
 
       {section_blocks}
 
+      {help_html}
+
       {report_incident_html}
 
     </div>"""
@@ -436,6 +489,7 @@ def build_index(sections, by_section, categories, cat_labels, report_incident=No
         "description": "Cyber security information and guides for SCU staff and students.",
         "section_label": "Home",
         "content": content,
+        "search_box": search_box_html(),
     }
     return render_template(TEMPLATES_DIR / "base.html", variables)
 
@@ -493,6 +547,7 @@ def build_section_page(section, section_articles, section_categories, cat_labels
         "description": f"{label} — SCU Cyber Security",
         "section_label": label,
         "content": content,
+        "search_box": search_box_html(),
     }
     return render_template(TEMPLATES_DIR / "base.html", variables)
 

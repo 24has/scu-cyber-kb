@@ -28,6 +28,7 @@
     <a href="/" class="site-header__logo">
       <img src="/assets/scu-logo.png" alt="Southern Cross University" class="site-header__logo-img" width="100" height="44">
     </a>
+    {{ search_box }}
     <nav class="site-header__nav" aria-label="Main navigation">
       <a href="https://www.scu.edu.au/study">Study</a>
       <a href="https://www.scu.edu.au/research">Research</a>
@@ -103,6 +104,48 @@ document.querySelectorAll('.faq-q').forEach(function(btn) {
     target.setAttribute('aria-hidden', String(expanded));
   });
 });
+</script>
+
+
+<script>
+// Client-side search
+(function() {
+  var input = document.getElementById('site-search');
+  var btn = input ? input.closest('.search-box') : null;
+  if (!input) return;
+  btn.querySelector('button').addEventListener('click', doSearch);
+  input.addEventListener('keydown', function(e) { if (e.key === 'Enter') doSearch(); });
+  function doSearch() {
+    var q = input.value.trim().toLowerCase();
+    if (!q) return;
+    fetch('/search.json').then(function(r) { return r.json(); }).then(function(data) {
+      var results = data.filter(function(a) {
+        return a.title.toLowerCase().includes(q) ||
+               (a.description || '').toLowerCase().includes(q) ||
+               (a.category || '').toLowerCase().includes(q);
+      });
+      showResults(results, q);
+    });
+  }
+  function showResults(results, q) {
+    var main = document.getElementById('main-content');
+    if (!main) return;
+    var html = '<div class="search-results"><h2>Search results for "' + q + '"</h2>';
+    if (results.length === 0) {
+      html += '<p>No results found. Try a different search term.</p>';
+    } else {
+      html += '<ul class="article-list">';
+      results.forEach(function(a) {
+        html += '<li><a href="/' + a.id + '"><span class="article-list__title">' + a.title + '</span>';
+        if (a.description) html += '<span class="article-list__desc">' + a.description + '</span>';
+        html += '</a></li>';
+      });
+      html += '</ul>';
+    }
+    html += '</div>';
+    main.innerHTML = html;
+  }
+})();
 </script>
 
 </body>
