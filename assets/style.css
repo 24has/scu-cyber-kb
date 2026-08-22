@@ -467,6 +467,17 @@ tbody tr:hover { background: var(--sage-light); }
 /* ── Staff-only / scope badges ── */
 .badge--staff { background: var(--navy); color: var(--gold); }
 
+/* ── Mockup note banner ── */
+.mockup-note {
+  background: #FFF3B0;
+  border-left: 4px solid var(--gold);
+  padding: 1rem 1.25rem;
+  margin: 0 0 2rem;
+  border-radius: var(--radius);
+  font-size: 0.9375rem;
+  color: var(--navy-dark);
+}
+
 /* ── Utility ── */
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
 .text-gold { color: var(--gold); }

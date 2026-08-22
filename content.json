@@ -36,36 +36,109 @@
     }
   },
   "sections": [
-    {"id": "announcements", "label": "Announcements"},
-    {"id": "awareness", "label": "Awareness"},
-    {"id": "knowledge-base", "label": "Knowledge Base"},
-    {"id": "policies-procedures", "label": "Policies & Procedures"}
+    {
+      "id": "announcements",
+      "label": "Announcements"
+    },
+    {
+      "id": "awareness",
+      "label": "Awareness"
+    },
+    {
+      "id": "knowledge-base",
+      "label": "Knowledge Base"
+    },
+    {
+      "id": "policies",
+      "label": "Policies"
+    },
+    {
+      "id": "guidelines",
+      "label": "Guidelines",
+      "audience": "staff"
+    }
   ],
   "categories": {
     "announcements": [],
     "awareness": [
-      {"id": "campaigns", "label": "Campaigns"},
-      {"id": "posters", "label": "Posters"},
-      {"id": "tips", "label": "Security tips"},
-      {"id": "training", "label": "Training"},
-      {"id": "events", "label": "Events"}
+      {
+        "id": "campaigns",
+        "label": "Campaigns"
+      },
+      {
+        "id": "posters",
+        "label": "Posters"
+      },
+      {
+        "id": "tips",
+        "label": "Security tips"
+      },
+      {
+        "id": "training",
+        "label": "Training"
+      },
+      {
+        "id": "events",
+        "label": "Events"
+      }
     ],
     "knowledge-base": [
-      {"id": "mfa", "label": "Multi-factor authentication"},
-      {"id": "passwords", "label": "Passwords"},
-      {"id": "phishing", "label": "Phishing"},
-      {"id": "devices", "label": "Devices"},
-      {"id": "email-security", "label": "Email security"},
-      {"id": "remote-access", "label": "Remote access"},
-      {"id": "data-handling", "label": "Data handling"},
-      {"id": "software-security", "label": "Software security"},
-      {"id": "policy", "label": "Policy"}
+      {
+        "id": "mfa",
+        "label": "Multi-factor authentication"
+      },
+      {
+        "id": "passwords",
+        "label": "Passwords"
+      },
+      {
+        "id": "phishing",
+        "label": "Phishing"
+      },
+      {
+        "id": "devices",
+        "label": "Devices"
+      },
+      {
+        "id": "email-security",
+        "label": "Email security"
+      },
+      {
+        "id": "remote-access",
+        "label": "Remote access"
+      },
+      {
+        "id": "data-handling",
+        "label": "Data handling"
+      },
+      {
+        "id": "software-security",
+        "label": "Software security"
+      },
+      {
+        "id": "policy",
+        "label": "Policy"
+      }
     ],
-    "policies-procedures": [
-      {"id": "policies", "label": "Policies"},
-      {"id": "guidelines", "label": "Guidelines"},
-      {"id": "standards", "label": "Standards"},
-      {"id": "procedures", "label": "Procedures"}
+    "policies": [
+      {
+        "id": "policies",
+        "label": "Policies"
+      }
+    ],
+    "guidelines": [
+      {
+        "id": "guidelines",
+        "label": "Guidelines"
+      },
+      {
+        "id": "standards",
+        "label": "Standards"
+      },
+      {
+        "id": "procedures",
+        "label": "Procedures"
+      }
     ]
   },
   "documents": [
@@ -73,6 +146,7 @@
       "id": "asset-classification-policy",
       "title": "Information Asset Classification Policy",
       "type": "policy",
+      "section": "policies",
       "audience": "staff",
       "status": "approved",
       "version": "V1.0",
@@ -85,6 +159,7 @@
       "id": "it-security-policy",
       "title": "Information Technology (IT) Security Policy",
       "type": "policy",
+      "section": "policies",
       "audience": "staff",
       "status": "approved",
       "version": "V1.0",
@@ -97,6 +172,7 @@
       "id": "third-party-security-policy",
       "title": "Information Technology - Third Party - Security Policy",
       "type": "policy",
+      "section": "policies",
       "audience": "staff",
       "status": "approved",
       "version": "V1.0",
@@ -109,6 +185,7 @@
       "id": "it-conditions-of-use",
       "title": "Information Technology Conditions of Use Policy",
       "type": "policy",
+      "section": "policies",
       "audience": "all",
       "status": "approved",
       "summary": "Defines acceptable use of University IT systems and networks for staff, students, and other authorised users.",
@@ -120,6 +197,7 @@
       "id": "backup-recovery-guidelines",
       "title": "Backup and Recovery Guidelines",
       "type": "guideline",
+      "section": "guidelines",
       "audience": "staff",
       "status": "approved",
       "version": "V1.0",
@@ -133,6 +211,7 @@
       "id": "firewall-security-guidelines",
       "title": "Firewall Security Guidelines",
       "type": "guideline",
+      "section": "guidelines",
       "audience": "staff",
       "status": "approved",
       "version": "V1.0",
@@ -146,6 +225,7 @@
       "id": "patch-management-guidelines",
       "title": "Patch Management Guidelines",
       "type": "guideline",
+      "section": "guidelines",
       "audience": "staff",
       "status": "approved",
       "version": "V1.0",
@@ -159,6 +239,7 @@
       "id": "remote-access-guidelines",
       "title": "Remote Access Guidelines",
       "type": "guideline",
+      "section": "guidelines",
       "audience": "staff",
       "status": "approved",
       "version": "V1.0",
@@ -172,6 +253,7 @@
       "id": "third-party-security-guidelines",
       "title": "Third-Party Security Guidelines",
       "type": "guideline",
+      "section": "guidelines",
       "audience": "staff",
       "status": "approved",
       "version": "V1.0",
@@ -244,7 +326,10 @@
       "title": "Multi-factor authentication (MFA)",
       "section": "knowledge-base",
       "category": "mfa",
-      "audience": ["staff", "students"],
+      "audience": [
+        "staff",
+        "students"
+      ],
       "description": "Why SMS is going away, your options compared, and how to set each one up.",
       "order": 1
     },
@@ -253,7 +338,10 @@
       "title": "Passwords and passphrases",
       "section": "knowledge-base",
       "category": "passwords",
-      "audience": ["staff", "students"],
+      "audience": [
+        "staff",
+        "students"
+      ],
       "description": "Create strong passphrases, use a password manager, and keep your accounts safe.",
       "order": 2
     },
@@ -262,7 +350,10 @@
       "title": "Report a phishing email",
       "section": "knowledge-base",
       "category": "phishing",
-      "audience": ["staff", "students"],
+      "audience": [
+        "staff",
+        "students"
+      ],
       "description": "Spot the signs, use the Report Phishing button, and what to do if you clicked.",
       "order": 3
     },
@@ -271,7 +362,10 @@
       "title": "Email security",
       "section": "knowledge-base",
       "category": "email-security",
-      "audience": ["staff", "students"],
+      "audience": [
+        "staff",
+        "students"
+      ],
       "description": "How SCU filters spam and phishing, what the external sender tag means, and how to report suspicious messages.",
       "order": 4
     },
@@ -280,7 +374,9 @@
       "title": "Remote access and VPN",
       "section": "knowledge-base",
       "category": "remote-access",
-      "audience": ["staff"],
+      "audience": [
+        "staff"
+      ],
       "description": "Access SCU systems securely from off-campus using the VPN.",
       "order": 5
     },
@@ -289,7 +385,9 @@
       "title": "Handling university data",
       "section": "knowledge-base",
       "category": "data-handling",
-      "audience": ["staff"],
+      "audience": [
+        "staff"
+      ],
       "description": "How to classify, store, and share university information securely.",
       "order": 6
     },
@@ -298,7 +396,9 @@
       "title": "Software security",
       "section": "knowledge-base",
       "category": "software-security",
-      "audience": ["staff"],
+      "audience": [
+        "staff"
+      ],
       "description": "Approved software, automatic updates, and requesting new software.",
       "order": 7
     },
@@ -307,7 +407,10 @@
       "title": "Acceptable use of ICT",
       "section": "knowledge-base",
       "category": "policy",
-      "audience": ["staff", "students"],
+      "audience": [
+        "staff",
+        "students"
+      ],
       "description": "What is and is not allowed when using SCU systems and devices.",
       "order": 8
     }

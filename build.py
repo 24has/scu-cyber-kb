@@ -404,26 +404,42 @@ def build_index(sections, by_section, categories, cat_labels, report_incident=No
         <div class="awareness-grid">{items}</div>
       </section>"""
 
-        elif sec_id == "policies-procedures":
-            # Compact category grid (just the 4 types) — full document list lives on landing page
+        elif sec_id == "policies":
+            # Public — show one card per document linking to the landing page anchor
             pp_html = '<div class="kb-card-grid">'
-            pp_groups = {}
             for d in (documents or []):
-                pp_groups.setdefault(d.get("type", "other"), []).append(d)
-            type_map = {"policies": "policy", "guidelines": "guideline", "standards": "standard", "procedures": "procedure"}
-            for cat in sec_cats:
-                cat_id = cat["id"]
-                cat_docs = pp_groups.get(cat_id, []) or pp_groups.get(type_map.get(cat_id, cat_id), [])
-                if not cat_docs:
+                if d.get("section") != "policies":
                     continue
-                first = cat_docs[0]
-                pp_html += '<a href="/policies-procedures#' + cat_id + '" class="kb-card">'
-                pp_html += '<h3>' + cat["label"] + '</h3>'
-                pp_html += '<p>' + first.get("summary", "")[:100] + '</p>'
-                pp_html += '<span class="kb-card__count">' + str(len(cat_docs)) + ' document' + ('s' if len(cat_docs) != 1 else '') + '</span>'
+                pp_html += '<a href="/policies#' + d.get("type", "policy") + '" class="kb-card">'
+                pp_html += '<h3>' + d["title"] + '</h3>'
+                pp_html += '<p>' + d.get("summary", "")[:140] + '</p>'
+                pp_html += '<span class="kb-card__count">Open document</span>'
                 pp_html += '</a>'
             pp_html += '</div>'
             section_blocks += '<section class="home-section"><h2 class="home-section__heading">' + sec["label"] + '</h2>' + pp_html + '</section>'
+
+        elif sec_id == "guidelines":
+            # Staff only — show category cards with Staff only badge on the heading
+            pp_html = '<div class="kb-card-grid">'
+            pp_groups = {}
+            for d in (documents or []):
+                if d.get("section") != "guidelines":
+                    continue
+                pp_groups.setdefault(d.get("type", "other"), []).append(d)
+            # Map plural category IDs to singular document types
+            type_map = {"guidelines": "guideline", "standards": "standard", "procedures": "procedure"}
+            for cat in sec_cats:
+                cat_docs = pp_groups.get(cat["id"], []) or pp_groups.get(type_map.get(cat["id"], cat["id"]), [])
+                if not cat_docs:
+                    continue
+                first = cat_docs[0]
+                pp_html += '<a href="/guidelines#' + cat["id"] + '" class="kb-card">'
+                pp_html += '<h3>' + cat["label"] + '</h3>'
+                pp_html += '<p>' + first.get("summary", "")[:140] + '</p>'
+                pp_html += '<span class="kb-card__count">' + str(len(cat_docs)) + ' document' + ('s' if len(cat_docs) != 1 else '') + '</span>'
+                pp_html += '</a>'
+            pp_html += '</div>'
+            section_blocks += '<section class="home-section"><h2 class="home-section__heading">' + sec["label"] + ' <span class="badge badge--staff">Staff only</span></h2>' + pp_html + '</section>'
 
         else:
             # Knowledge base: compact card grid of categories (not full article list)
@@ -547,6 +563,9 @@ def build_section_page(section, section_articles, sec_docs, section_categories, 
 
     body = ""
     if sec_docs:
+        # Mockup note for staff-only sections
+        if section.get("audience") == "staff":
+            body += '<aside class="mockup-note">Mockup note: this page would be staff-only on the live site. Public visitors see only the category card on the homepage with a Staff only badge.</aside>'
         doc_groups = {}
         for d in sec_docs:
             doc_groups.setdefault(d.get("type", "other"), []).append(d)
