@@ -230,6 +230,7 @@ def build_site():
     articles = config["articles"]
     sections = config["sections"]
     categories = config["categories"]
+    documents = config.get("documents", [])
     report_incident = config.get("report_incident", {})
     help_config = config.get("help", {})
 
@@ -240,6 +241,9 @@ def build_site():
     by_section = {s["id"]: [] for s in sections}
     for art in articles:
         by_section.setdefault(art["section"], []).append(art)
+    by_section_docs = {}
+    for doc in documents:
+        by_section_docs.setdefault(doc.get("section", "policies-procedures"), []).append(doc)
 
     cat_labels = {}
     for sec_id, cats in categories.items():
@@ -312,13 +316,27 @@ def build_site():
             "section": art["section"],
             "category": art.get("category", ""),
             "audience": art.get("audience", []),
+            "type": "article",
+        })
+    for doc in documents:
+        aud = doc.get("audience", "")
+        if isinstance(aud, str):
+            aud = [aud] if aud else []
+        search_index.append({
+            "id": doc["id"],
+            "title": doc["title"],
+            "description": doc.get("summary", ""),
+            "section": "policies-procedures",
+            "category": doc.get("type", ""),
+            "audience": aud,
+            "type": "document",
         })
     import json as _json
     (DIST / "search.json").write_text(_json.dumps(search_index), encoding="utf-8")
     print(f"  Built: {DIST / 'search.json'}")
 
     # ── Build index page ──
-    index_html = build_index(sections, by_section, categories, cat_labels, report_incident, help_config, articles, cat_labels)
+    index_html = build_index(sections, by_section, categories, cat_labels, report_incident, help_config, articles, cat_labels, documents)
     (DIST / "index.html").write_text(index_html, encoding="utf-8")
     print(f"  Built: {DIST / 'index.html'}")
 
@@ -326,7 +344,8 @@ def build_site():
     for sec in sections:
         sec_id = sec["id"]
         sec_arts = sorted(by_section.get(sec_id, []), key=lambda x: x.get("order", 99))
-        sec_html = build_section_page(sec, sec_arts, categories.get(sec_id, []), cat_labels)
+        sec_docs = sorted(by_section_docs.get(sec_id, []), key=lambda x: x.get("order", 99))
+        sec_html = build_section_page(sec, sec_arts, sec_docs, categories.get(sec_id, []), cat_labels)
         (DIST / f"{sec_id}.html").write_text(sec_html, encoding="utf-8")
         print(f"  Built: {DIST / f'{sec_id}.html'}")
 
@@ -340,7 +359,7 @@ def build_site():
 def search_box_html():
     return '<div class="search-box"><input type="search" id="site-search" placeholder="Search..." aria-label="Search this site"><button type="submit" aria-label="Search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></button></div>'
 
-def build_index(sections, by_section, categories, cat_labels, report_incident=None, help_config=None, all_articles=None, cat_labels_for_search=None):
+def build_index(sections, by_section, categories, cat_labels, report_incident=None, help_config=None, all_articles=None, cat_labels_for_search=None, documents=None):
     with open(TEMPLATES_DIR / "base.html", "r", encoding="utf-8") as f:
         tpl = f.read()
 
@@ -384,6 +403,47 @@ def build_index(sections, by_section, categories, cat_labels, report_incident=No
         <h2 class="home-section__heading">{sec['label']}</h2>
         <div class="awareness-grid">{items}</div>
       </section>"""
+
+        elif sec_id == "policies-procedures":
+            pp_html = ""
+            pp_groups = {}
+            for d in (documents or []):
+                pp_groups.setdefault(d.get("type", "other"), []).append(d)
+            # Map plural category IDs to singular document types
+            type_map = {"policies": "policy", "guidelines": "guideline", "standards": "standard", "procedures": "procedure"}
+            for cat in sec_cats:
+                cat_id = cat["id"]
+                cat_docs = pp_groups.get(cat_id, []) or pp_groups.get(type_map.get(cat_id, cat_id), [])
+                if not cat_docs:
+                    continue
+                pp_html += '<h3 class="kb-category-heading">' + cat["label"] + '</h3>'
+                pp_html += '<div class="doc-list">'
+                for d in cat_docs:
+                    audience = d.get("audience", "")
+                    badge = ""
+                    if audience == "staff":
+                        badge = '<span class="badge badge--staff">Staff only</span>'
+                    elif isinstance(audience, list) and "students" in audience:
+                        badge = '<span class="badge badge--audience">All users</span>'
+                    meta_parts = []
+                    if d.get("version"):
+                        meta_parts.append('<span class="doc-card__version">' + d["version"] + '</span>')
+                    if d.get("status"):
+                        meta_parts.append('<span class="badge badge--' + d["status"] + '">' + d["status"].title() + '</span>')
+                    if d.get("approved_date"):
+                        meta_parts.append('<span class="doc-card__date">Approved ' + d["approved_date"] + '</span>')
+                    if d.get("owner"):
+                        meta_parts.append('<span class="doc-card__owner">Owner: ' + d["owner"] + '</span>')
+                    meta = " ".join(meta_parts)
+                    open_url = d.get("pdf_url") or d.get("url") or "#"
+                    target_attr = ' target="_blank" rel="noopener"' if (d.get("pdf_url") or (d.get("url","") and d.get("url","").startswith("http"))) else ""
+                    pp_html += '<a href="' + open_url + '" class="doc-card"' + target_attr + '>'
+                    pp_html += '<div class="doc-card__header"><h4>' + d["title"] + '</h4>' + badge + '</div>'
+                    pp_html += '<p>' + d.get("summary", "") + '</p>'
+                    pp_html += '<div class="doc-card__meta">' + meta + '</div>'
+                    pp_html += "</a>"
+                pp_html += "</div>"
+            section_blocks += '<section class="home-section"><h2 class="home-section__heading">' + sec["label"] + ' <span class="badge badge--staff">Staff only</span></h2>' + pp_html + '</section>'
 
         else:
             # Knowledge base: compact card grid of categories (not full article list)
@@ -494,7 +554,7 @@ def build_index(sections, by_section, categories, cat_labels, report_incident=No
     return render_template(TEMPLATES_DIR / "base.html", variables)
 
 
-def build_section_page(section, section_articles, section_categories, cat_labels):
+def build_section_page(section, section_articles, sec_docs, section_categories, cat_labels):
     with open(TEMPLATES_DIR / "base.html", "r", encoding="utf-8") as f:
         tpl = f.read()
 
@@ -506,6 +566,43 @@ def build_section_page(section, section_articles, section_categories, cat_labels
         grouped.setdefault(a.get("category", ""), []).append(a)
 
     body = ""
+    if sec_docs:
+        doc_groups = {}
+        for d in sec_docs:
+            doc_groups.setdefault(d.get("type", "other"), []).append(d)
+        type_map = {"policies": "policy", "guidelines": "guideline", "standards": "standard", "procedures": "procedure"}
+        for cat in section_categories:
+            cat_id = cat["id"]
+            cat_docs = doc_groups.get(cat_id, []) or doc_groups.get(type_map.get(cat_id, cat_id), [])
+            if not cat_docs:
+                continue
+            body += '<h2 class="section-category-heading" id="' + cat_id + '">' + cat["label"] + '</h2><div class="doc-list">'
+            for d in cat_docs:
+                aud = d.get("audience", "")
+                badge = ""
+                if aud == "staff":
+                    badge = '<span class="badge badge--staff">Staff only</span>'
+                elif isinstance(aud, list) and "students" in aud:
+                    badge = '<span class="badge badge--audience">All users</span>'
+                meta_parts = []
+                if d.get("version"):
+                    meta_parts.append('<span class="doc-card__version">' + d["version"] + '</span>')
+                if d.get("status"):
+                    meta_parts.append('<span class="badge badge--' + d["status"] + '">' + d["status"].title() + '</span>')
+                if d.get("approved_date"):
+                    meta_parts.append('<span class="doc-card__date">Approved ' + d["approved_date"] + '</span>')
+                if d.get("owner"):
+                    meta_parts.append('<span class="doc-card__owner">Owner: ' + d["owner"] + '</span>')
+                meta = " ".join(meta_parts)
+                open_url = d.get("pdf_url") or d.get("url") or "#"
+                target_attr = ' target="_blank" rel="noopener"' if (d.get("pdf_url") or (d.get("url","") and d.get("url","").startswith("http"))) else ""
+                body += '<a href="' + open_url + '" class="doc-card"' + target_attr + '>'
+                body += '<div class="doc-card__header"><h4>' + d["title"] + '</h4>' + badge + '</div>'
+                body += '<p>' + d.get("summary", "") + '</p>'
+                body += '<div class="doc-card__meta">' + meta + '</div>'
+                body += "</a>"
+            body += "</div>"
+
     if section_articles:
         cat_order = [c["id"] for c in section_categories] if section_categories else list(grouped.keys())
         for cat_id in cat_order:
@@ -530,7 +627,7 @@ def build_section_page(section, section_articles, section_categories, cat_labels
               <span class="article-list__desc">{a.get('description','')}</span>
             </a></li>"""
             body += "</ul>\n"
-    else:
+    elif not sec_docs:
         body = "<p>Nothing here yet.</p>"
 
     content = f"""

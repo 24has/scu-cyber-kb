@@ -1,7 +1,7 @@
 {
   "site": {
     "title": "Cyber Resilience",
-    "description": "Cyber security information, awareness materials, and knowledge base for SCU staff and students."
+    "description": "Cyber resilience information, awareness materials, and knowledge base for SCU staff and students."
   },
   "report_incident": {
     "title": "Report a cyber incident",
@@ -38,7 +38,8 @@
   "sections": [
     {"id": "announcements", "label": "Announcements"},
     {"id": "awareness", "label": "Awareness"},
-    {"id": "knowledge-base", "label": "Knowledge Base"}
+    {"id": "knowledge-base", "label": "Knowledge Base"},
+    {"id": "policies-procedures", "label": "Policies & Procedures", "audience": "staff", "restricted": true}
   ],
   "categories": {
     "announcements": [],
@@ -59,8 +60,128 @@
       {"id": "data-handling", "label": "Data handling"},
       {"id": "software-security", "label": "Software security"},
       {"id": "policy", "label": "Policy"}
+    ],
+    "policies-procedures": [
+      {"id": "policies", "label": "Policies"},
+      {"id": "guidelines", "label": "Guidelines"},
+      {"id": "standards", "label": "Standards"},
+      {"id": "procedures", "label": "Procedures"}
     ]
   },
+  "documents": [
+    {
+      "id": "asset-classification-policy",
+      "title": "Information Asset Classification Policy",
+      "type": "policy",
+      "audience": "staff",
+      "status": "approved",
+      "version": "V1.0",
+      "summary": "Sets out how Southern Cross University classifies information assets and the controls that apply to each classification level.",
+      "url": "https://policies.scu.edu.au/document/view-current.php?id=494",
+      "owner": "Information Security",
+      "order": 1
+    },
+    {
+      "id": "it-security-policy",
+      "title": "Information Technology (IT) Security Policy",
+      "type": "policy",
+      "audience": "staff",
+      "status": "approved",
+      "version": "V1.0",
+      "summary": "Establishes the University's information security obligations and the responsibilities of staff, contractors, and third parties.",
+      "url": "https://policies.scu.edu.au/document/view-current.php?id=493",
+      "owner": "Technology Services",
+      "order": 2
+    },
+    {
+      "id": "third-party-security-policy",
+      "title": "Information Technology - Third Party - Security Policy",
+      "type": "policy",
+      "audience": "staff",
+      "status": "approved",
+      "version": "V1.0",
+      "summary": "Defines the security requirements that apply when engaging third parties to deliver or support University technology services.",
+      "url": "https://policies.scu.edu.au/document/view-current.php?id=495",
+      "owner": "Technology Services",
+      "order": 3
+    },
+    {
+      "id": "it-conditions-of-use",
+      "title": "Information Technology Conditions of Use Policy",
+      "type": "policy",
+      "audience": "all",
+      "status": "approved",
+      "summary": "Defines acceptable use of University IT systems and networks for staff, students, and other authorised users.",
+      "url": "https://policies.scu.edu.au/document/view-current.php?id=307",
+      "owner": "Technology Services",
+      "order": 4
+    },
+    {
+      "id": "backup-recovery-guidelines",
+      "title": "Backup and Recovery Guidelines",
+      "type": "guideline",
+      "audience": "staff",
+      "status": "approved",
+      "version": "V1.0",
+      "approved_date": "2020-07-08",
+      "summary": "Sets requirements for backing up University data and recovering it after loss, corruption, or disaster. Covers storage selection, encryption, retention, and cloud backup strategies.",
+      "pdf_url": "/assets/documents/backup-recovery-v1.0.pdf",
+      "owner": "Technology Services",
+      "order": 5
+    },
+    {
+      "id": "firewall-security-guidelines",
+      "title": "Firewall Security Guidelines",
+      "type": "guideline",
+      "audience": "staff",
+      "status": "approved",
+      "version": "V1.0",
+      "approved_date": "2023-10-19",
+      "summary": "Defines requirements for configuring and operating SCU firewalls, including rule configuration best practice and change procedures.",
+      "pdf_url": "/assets/documents/firewall-security-v1.0.pdf",
+      "owner": "Cyber Security",
+      "order": 6
+    },
+    {
+      "id": "patch-management-guidelines",
+      "title": "Patch Management Guidelines",
+      "type": "guideline",
+      "audience": "staff",
+      "status": "approved",
+      "version": "V1.0",
+      "approved_date": "2023-12-08",
+      "summary": "Defines how SCU identifies and remediates software vulnerabilities across operating systems, applications, and firmware. Covers risk response approach (accept, mitigate, transfer, avoid).",
+      "pdf_url": "/assets/documents/patch-management-v1.0.pdf",
+      "owner": "Technology Services",
+      "order": 7
+    },
+    {
+      "id": "remote-access-guidelines",
+      "title": "Remote Access Guidelines",
+      "type": "guideline",
+      "audience": "staff",
+      "status": "approved",
+      "version": "V1.0",
+      "approved_date": "2024-07-08",
+      "summary": "Sets requirements for securely connecting to SCU networks from off-campus. Covers access approval, approved solutions (VPN, SSL), encryption standards, and access limitations.",
+      "pdf_url": "/assets/documents/remote-access-v1.0.pdf",
+      "owner": "Technology Services",
+      "order": 8
+    },
+    {
+      "id": "third-party-security-guidelines",
+      "title": "Third-Party Security Guidelines",
+      "type": "guideline",
+      "audience": "staff",
+      "status": "approved",
+      "version": "V1.0",
+      "approved_date": "2024-10-10",
+      "summary": "Practical guidance for business owners on assessing cyber security risk when engaging third-party service providers. Aligned to the Third-Party IT Security Policy.",
+      "pdf_url": "/assets/documents/third-party-security-v1.0.pdf",
+      "owner": "Cyber Security",
+      "order": 9
+    }
+  ],
   "articles": [
     {
       "id": "mfa-deadline",
@@ -104,7 +225,7 @@
     },
     {
       "id": "training",
-      "title": "Cyber security training",
+      "title": "Cyber resilience training",
       "section": "awareness",
       "category": "training",
       "description": "Mandatory training modules and how to complete them.",
@@ -112,7 +233,7 @@
     },
     {
       "id": "events",
-      "title": "Cyber security events",
+      "title": "Cyber resilience events",
       "section": "awareness",
       "category": "events",
       "description": "Upcoming talks, workshops, and awareness campaigns.",
