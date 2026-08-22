@@ -389,17 +389,21 @@ def build_index(sections, by_section, categories, cat_labels, report_incident=No
         <div class="announcement-grid">{items}</div>
       </section>"""
 
-        elif sec_id in ("awareness", "policies", "guidelines", "knowledge-base"):
+        elif sec_id in ("awareness", "policies", "guidelines", "digital-safety"):
             # Compact tile card linking to the section landing page
             # Count items for the meta line
-            if sec_id == "knowledge-base":
+            if sec_id == "digital-safety":
                 count = len(sec_arts)
                 meta = f"{count} article" + ("s" if count != 1 else "")
-                desc = "How-to guides, explanations, and reference material for cyber resilience."
+                desc = "Practical, behaviour-focused security guides for staff and students."
             elif sec_id == "awareness":
                 count = len(sec_arts)
                 meta = f"{count} item" + ("s" if count != 1 else "")
                 desc = "Campaigns, posters, tips, and events to keep security top of mind."
+            elif sec_id == "digital-safety":
+                count = len(sec_arts)
+                meta = f"{count} article" + ("s" if count != 1 else "")
+                desc = "Practical, behaviour-focused security guides for staff and students."
             elif sec_id == "policies":
                 count = sum(1 for d in (documents or []) if d.get("section") == "policies")
                 meta = f"{count} document" + ("s" if count != 1 else "")
@@ -481,7 +485,7 @@ def build_index(sections, by_section, categories, cat_labels, report_incident=No
           <p class="home-hero__lede">Practical guidance, awareness materials, and how-to guides to help staff and students stay secure online.</p>
           <div class="home-hero__actions">
             <a href="/meet-lockie" class="home-hero__cta">Meet Lockie, your guide</a>
-            <a href="/knowledge-base" class="home-hero__cta--ghost">Browse the knowledge base</a>
+            <a href="/digital-safety" class="home-hero__cta--ghost">Browse the digital safety guides</a>
           </div>
         </div>
         <div class="home-hero__figure" aria-hidden="true">

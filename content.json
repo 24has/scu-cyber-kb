@@ -45,8 +45,8 @@
       "label": "Awareness"
     },
     {
-      "id": "knowledge-base",
-      "label": "Knowledge Base"
+      "id": "digital-safety",
+      "label": "Digital Safety"
     },
     {
       "id": "policies",
@@ -82,7 +82,27 @@
         "label": "Events"
       }
     ],
-    "knowledge-base": [
+    "policies": [
+      {
+        "id": "policies",
+        "label": "Policies"
+      }
+    ],
+    "guidelines": [
+      {
+        "id": "guidelines",
+        "label": "Guidelines"
+      },
+      {
+        "id": "standards",
+        "label": "Standards"
+      },
+      {
+        "id": "procedures",
+        "label": "Procedures"
+      }
+    ],
+    "digital-safety": [
       {
         "id": "authentication",
         "label": "Authentication"
@@ -106,26 +126,6 @@
       {
         "id": "software-security",
         "label": "Software security"
-      }
-    ],
-    "policies": [
-      {
-        "id": "policies",
-        "label": "Policies"
-      }
-    ],
-    "guidelines": [
-      {
-        "id": "guidelines",
-        "label": "Guidelines"
-      },
-      {
-        "id": "standards",
-        "label": "Standards"
-      },
-      {
-        "id": "procedures",
-        "label": "Procedures"
       }
     ]
   },
@@ -312,7 +312,7 @@
     {
       "id": "mfa",
       "title": "Multi-factor authentication (MFA)",
-      "section": "knowledge-base",
+      "section": "digital-safety",
       "category": "authentication",
       "audience": [
         "staff",
@@ -324,7 +324,7 @@
     {
       "id": "passwords",
       "title": "Passwords and passphrases",
-      "section": "knowledge-base",
+      "section": "digital-safety",
       "category": "authentication",
       "audience": [
         "staff",
@@ -336,7 +336,7 @@
     {
       "id": "phishing",
       "title": "Report a phishing email",
-      "section": "knowledge-base",
+      "section": "digital-safety",
       "category": "email-security",
       "audience": [
         "staff",
@@ -348,7 +348,7 @@
     {
       "id": "email-security",
       "title": "Email security",
-      "section": "knowledge-base",
+      "section": "digital-safety",
       "category": "email-security",
       "audience": [
         "staff",
@@ -360,7 +360,7 @@
     {
       "id": "remote-access",
       "title": "Remote access and VPN",
-      "section": "knowledge-base",
+      "section": "digital-safety",
       "category": "remote-access",
       "audience": [
         "staff"
@@ -371,7 +371,7 @@
     {
       "id": "data-handling",
       "title": "Handling university data",
-      "section": "knowledge-base",
+      "section": "digital-safety",
       "category": "data-handling",
       "audience": [
         "staff"
@@ -382,7 +382,7 @@
     {
       "id": "software-security",
       "title": "Software security",
-      "section": "knowledge-base",
+      "section": "digital-safety",
       "category": "software-security",
       "audience": [
         "staff"
