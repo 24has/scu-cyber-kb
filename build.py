@@ -386,8 +386,14 @@ def build_index(sections, by_section, categories, cat_labels):
     <div class="page-wrapper">
 
       <div class="home-hero">
-        <h1>Cyber Security</h1>
-        <p>Information, awareness, and step-by-step guides to help SCU staff and students stay secure.</p>
+        <div class="home-hero__text">
+          <h1>Cyber Security</h1>
+          <p>Information, awareness, and step-by-step guides to help SCU staff and students stay secure.</p>
+        </div>
+        <a href="/meet-lockie" class="home-hero__mascot" aria-label="Meet Lockie, your cyber resilience guide">
+          <img src="/assets/lockie.png" alt="Lockie, SCU's cyber resilience mascot" width="110" height="107">
+          <span>Meet Lockie</span>
+        </a>
       </div>
 
       {section_blocks}

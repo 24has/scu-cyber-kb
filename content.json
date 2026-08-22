@@ -70,6 +70,22 @@
       "category": "mfa",
       "description": "Why SMS is going away, your options compared, and how to set each one up.",
       "order": 1
+    },
+    {
+      "id": "passwords",
+      "title": "Passwords and passphrases",
+      "section": "knowledge-base",
+      "category": "passwords",
+      "description": "Create strong passphrases, use a password manager, and keep your accounts safe.",
+      "order": 2
+    },
+    {
+      "id": "phishing",
+      "title": "Report a phishing email",
+      "section": "knowledge-base",
+      "category": "phishing",
+      "description": "Spot the signs, use the Report Phishing button, and what to do if you clicked.",
+      "order": 3
     }
   ]
 }
