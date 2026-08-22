@@ -230,6 +230,7 @@ def build_site():
     articles = config["articles"]
     sections = config["sections"]
     categories = config["categories"]
+    report_incident = config.get("report_incident", {})
 
     # Index articles by id
     by_id = {a["id"]: a for a in articles}
@@ -294,7 +295,7 @@ def build_site():
         print(f"  Built: {out_path}")
 
     # ── Build index page ──
-    index_html = build_index(sections, by_section, categories, cat_labels)
+    index_html = build_index(sections, by_section, categories, cat_labels, report_incident)
     (DIST / "index.html").write_text(index_html, encoding="utf-8")
     print(f"  Built: {DIST / 'index.html'}")
 
@@ -313,7 +314,7 @@ def build_site():
     print(f"\nDone. Site built to {DIST}")
 
 
-def build_index(sections, by_section, categories, cat_labels):
+def build_index(sections, by_section, categories, cat_labels, report_incident=None):
     with open(TEMPLATES_DIR / "base.html", "r", encoding="utf-8") as f:
         tpl = f.read()
 
@@ -382,6 +383,24 @@ def build_index(sections, by_section, categories, cat_labels):
         {kb_html}
       </section>"""
 
+    # ── Report a cyber incident section ──
+    report_incident_html = ""
+    if report_incident:
+        bullets = "\n".join(f"<li>{item}</li>" for item in report_incident.get("what_to_include", []))
+        report_incident_html = f"""
+      <section class="report-incident">
+        <div class="report-incident__text">
+          <h2 class="report-incident__title">{report_incident.get('title', 'Report a cyber incident')}</h2>
+          <p class="report-incident__intro">{report_incident.get('intro', '')}</p>
+          <ul class="report-incident__list">
+            {bullets}
+          </ul>
+        </div>
+        <div class="report-incident__action">
+          <a href="{report_incident.get('button_url', '#')}" class="report-incident__button" target="_blank" rel="noopener">{report_incident.get('button_label', 'Report an incident')} →</a>
+        </div>
+      </section>"""
+
     content = f"""
     <div class="page-wrapper">
 
@@ -399,6 +418,8 @@ def build_index(sections, by_section, categories, cat_labels):
           <img src="/assets/lockie.png" alt="" width="217" height="345">
         </div>
       </section>
+
+      {report_incident_html}
 
       {section_blocks}
 

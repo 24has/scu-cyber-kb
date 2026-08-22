@@ -3,6 +3,19 @@
     "title": "Cyber Security",
     "description": "Cyber security information, awareness materials, and knowledge base for SCU staff and students."
   },
+  "report_incident": {
+    "title": "Report a cyber incident",
+    "intro": "Think your account has been compromised, or you have spotted suspicious activity? Report it. Acting quickly limits the damage.",
+    "what_to_include": [
+      "What happened, in your own words",
+      "When it happened",
+      "Which account or device is affected",
+      "Whether you clicked a link or entered your password",
+      "Any screenshots or error messages"
+    ],
+    "button_label": "Report an incident",
+    "button_url": "https://scu.atlassian.net/servicedesk/customer/portal/13/group/26/create/95"
+  },
   "sections": [
     {"id": "announcements", "label": "Announcements"},
     {"id": "awareness", "label": "Awareness"},
