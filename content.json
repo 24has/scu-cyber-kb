@@ -39,7 +39,7 @@
     {"id": "announcements", "label": "Announcements"},
     {"id": "awareness", "label": "Awareness"},
     {"id": "knowledge-base", "label": "Knowledge Base"},
-    {"id": "policies-procedures", "label": "Policies & Procedures", "audience": "staff", "restricted": true}
+    {"id": "policies-procedures", "label": "Policies & Procedures"}
   ],
   "categories": {
     "announcements": [],

@@ -405,45 +405,25 @@ def build_index(sections, by_section, categories, cat_labels, report_incident=No
       </section>"""
 
         elif sec_id == "policies-procedures":
-            pp_html = ""
+            # Compact category grid (just the 4 types) — full document list lives on landing page
+            pp_html = '<div class="kb-card-grid">'
             pp_groups = {}
             for d in (documents or []):
                 pp_groups.setdefault(d.get("type", "other"), []).append(d)
-            # Map plural category IDs to singular document types
             type_map = {"policies": "policy", "guidelines": "guideline", "standards": "standard", "procedures": "procedure"}
             for cat in sec_cats:
                 cat_id = cat["id"]
                 cat_docs = pp_groups.get(cat_id, []) or pp_groups.get(type_map.get(cat_id, cat_id), [])
                 if not cat_docs:
                     continue
-                pp_html += '<h3 class="kb-category-heading">' + cat["label"] + '</h3>'
-                pp_html += '<div class="doc-list">'
-                for d in cat_docs:
-                    audience = d.get("audience", "")
-                    badge = ""
-                    if audience == "staff":
-                        badge = '<span class="badge badge--staff">Staff only</span>'
-                    elif isinstance(audience, list) and "students" in audience:
-                        badge = '<span class="badge badge--audience">All users</span>'
-                    meta_parts = []
-                    if d.get("version"):
-                        meta_parts.append('<span class="doc-card__version">' + d["version"] + '</span>')
-                    if d.get("status"):
-                        meta_parts.append('<span class="badge badge--' + d["status"] + '">' + d["status"].title() + '</span>')
-                    if d.get("approved_date"):
-                        meta_parts.append('<span class="doc-card__date">Approved ' + d["approved_date"] + '</span>')
-                    if d.get("owner"):
-                        meta_parts.append('<span class="doc-card__owner">Owner: ' + d["owner"] + '</span>')
-                    meta = " ".join(meta_parts)
-                    open_url = d.get("pdf_url") or d.get("url") or "#"
-                    target_attr = ' target="_blank" rel="noopener"' if (d.get("pdf_url") or (d.get("url","") and d.get("url","").startswith("http"))) else ""
-                    pp_html += '<a href="' + open_url + '" class="doc-card"' + target_attr + '>'
-                    pp_html += '<div class="doc-card__header"><h4>' + d["title"] + '</h4>' + badge + '</div>'
-                    pp_html += '<p>' + d.get("summary", "") + '</p>'
-                    pp_html += '<div class="doc-card__meta">' + meta + '</div>'
-                    pp_html += "</a>"
-                pp_html += "</div>"
-            section_blocks += '<section class="home-section"><h2 class="home-section__heading">' + sec["label"] + ' <span class="badge badge--staff">Staff only</span></h2>' + pp_html + '</section>'
+                first = cat_docs[0]
+                pp_html += '<a href="/policies-procedures#' + cat_id + '" class="kb-card">'
+                pp_html += '<h3>' + cat["label"] + '</h3>'
+                pp_html += '<p>' + first.get("summary", "")[:100] + '</p>'
+                pp_html += '<span class="kb-card__count">' + str(len(cat_docs)) + ' document' + ('s' if len(cat_docs) != 1 else '') + '</span>'
+                pp_html += '</a>'
+            pp_html += '</div>'
+            section_blocks += '<section class="home-section"><h2 class="home-section__heading">' + sec["label"] + '</h2>' + pp_html + '</section>'
 
         else:
             # Knowledge base: compact card grid of categories (not full article list)
