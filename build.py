@@ -419,9 +419,9 @@ def build_index(sections, by_section, categories, cat_labels, report_incident=No
         </div>
       </section>
 
-      {report_incident_html}
-
       {section_blocks}
+
+      {report_incident_html}
 
     </div>"""
 
