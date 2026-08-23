@@ -103,6 +103,10 @@ pre code { background: none; padding: 0; }
 .sidebar-nav a { display: block; padding: 0.5rem 0.75rem; border-radius: var(--radius); text-decoration: none; color: var(--text); font-size: 0.875rem; font-weight: 500; transition: background .15s; border-left: 3px solid transparent; }
 .sidebar-nav a:hover { background: var(--sage-light); color: var(--navy); }
 .sidebar-nav a.active { background: var(--sage); color: var(--navy); border-left-color: var(--navy); font-weight: 600; }
+/* Sidebar item title and description (for section page sidebars) */
+.sidebar-nav__title { display: block; font-weight: 600; }
+.sidebar-nav__desc { display: block; font-size: 0.8125rem; color: var(--text-muted); font-weight: 400; margin-top: 0.125rem; }
+
 .sidebar-nav__heading { font-size: 0.75rem; text-transform: uppercase; letter-spacing: .05em; color: var(--text-muted); padding: 1rem 0.75rem 0.25rem; font-weight: 600; font-family: Montserrat, sans-serif; }
 .sidebar-nav__heading:first-child { padding-top: 0.25rem; }
 @media (max-width: 860px) { .page-layout { grid-template-columns: 1fr; grid-template-areas: "content" "sidebar"; } .page-sidebar { position: static; border-top: 1px solid var(--border); padding-top: 1.25rem; margin-top: 2rem; order: 2; } .sidebar-nav { display: flex; flex-wrap: wrap; gap: 0.25rem; } .sidebar-nav a { border-left: none; border-bottom: 3px solid transparent; border-radius: 0; } .sidebar-nav a.active { border-bottom-color: var(--navy); } .sidebar-nav__heading { width: 100%; } }

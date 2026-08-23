@@ -529,6 +529,61 @@ def build_index(sections, by_section, categories, cat_labels, report_incident=No
     return render_template(TEMPLATES_DIR / "base.html", variables)
 
 
+def _build_section_sidebar(section, section_articles, section_categories, cat_labels, parent=None, all_sections=None):
+    """Build the 'In this category' sidebar for section landing pages.
+    - Multi-article sections: list articles grouped by category.
+    - Single-article sections: list sibling sections at the same level.
+    """
+    items = ""
+    label = section["label"]
+
+    if len(section_articles) > 1:
+        # Group by category
+        grouped = {}
+        for a in section_articles:
+            grouped.setdefault(a.get("category", ""), []).append(a)
+
+        # Use category config order
+        cat_order = [c["id"] for c in section_categories] if section_categories else list(grouped.keys())
+        for cat_id in cat_order:
+            cat_arts = grouped.get(cat_id)
+            if not cat_arts:
+                continue
+            if cat_id in cat_labels:
+                items += '<li class="sidebar-nav__heading">' + cat_labels[cat_id] + "</li>\n"
+            for a in cat_arts:
+                items += '<li><a href="/' + a["id"] + '"><span class="sidebar-nav__title">' + a["title"] + '</span><span class="sidebar-nav__desc">' + a.get("description", "") + "</span></a></li>\n"
+        # Uncategorized leftovers
+        leftovers = [a for a in section_articles if not a.get("category") or a["category"] not in cat_order]
+        for a in leftovers:
+            items += '<li><a href="/' + a["id"] + '"><span class="sidebar-nav__title">' + a["title"] + '</span><span class="sidebar-nav__desc">' + a.get("description", "") + "</span></a></li>\n"
+    else:
+        # Single article: show sibling sections at the same scope
+        # Top-level sections: show other top-level sections
+        # Sub-sections under a parent: show other sub-sections under same parent
+        siblings = []
+        if parent:
+            for s in (all_sections or []):
+                if s.get("parent") == parent["id"] and s["id"] != section["id"]:
+                    siblings.append(s)
+            heading = "In " + parent["label"]
+        else:
+            # Top-level — show other top-level sections
+            for s in (all_sections or []):
+                if not s.get("parent") and s["id"] != section["id"] and s["id"] not in ("announcements",):
+                    siblings.append(s)
+            heading = "Browse"
+
+        items += '<li class="sidebar-nav__heading">' + heading + "</li>\n"
+        for s in siblings:
+            url = "/" + s["id"]
+            if s.get("parent"):
+                url = "/" + s["parent"] + "/" + s["id"]
+            items += '<li><a href="' + url + '"><span class="sidebar-nav__title">' + s["label"] + "</span></a></li>\n"
+
+    return items
+
+
 def build_section_page(section, section_articles, sec_docs, section_categories, cat_labels, parent=None, sub_sections=None, all_sections=None):
     with open(TEMPLATES_DIR / "base.html", "r", encoding="utf-8") as f:
         tpl = f.read()
@@ -670,13 +725,25 @@ def build_section_page(section, section_articles, sec_docs, section_categories, 
     elif not sec_docs:
         body = "<p>Nothing here yet.</p>"
 
+    sidebar_items = _build_section_sidebar(section, section_articles, section_categories, cat_labels, parent=parent, all_sections=all_sections)
+
     content = f"""
     <div class="page-wrapper">
       <div class="page-banner">
         <h1>{label}</h1>
         <div class="page-banner__meta"><span>{len(section_articles)} article{'s' if len(section_articles) != 1 else ''}</span></div>
       </div>
-      {body}
+      <div class="page-layout">
+        <aside class="page-sidebar">
+          <ul class="sidebar-nav">
+            <li class="sidebar-nav__heading">In this category</li>
+            {sidebar_items}
+          </ul>
+        </aside>
+        <main class="page-content" id="main-content">
+          {body}
+        </main>
+      </div>
     </div>"""
 
     variables = {
