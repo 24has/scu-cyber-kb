@@ -409,7 +409,7 @@ def build_index(sections, by_section, categories, cat_labels, report_incident=No
         if sec.get("parent"):
             # Sub-section (e.g. awareness under digital-safety) — skip on homepage
             continue
-        elif sec_id in ("digital-safety", "policies", "guidelines", "training", "events"):
+        elif sec_id in ("digital-safety", "policies", "guidelines"):
             # Compact tile card linking to the section landing page
             if sec_id == "digital-safety":
                 # Count articles across both sub-sections
@@ -632,7 +632,18 @@ def build_section_page(section, section_articles, sec_docs, section_categories, 
                 body += "</a>"
             body += "</div>"
 
-    if section_articles:
+    # Single-article section: render the article body inline (no extra click needed)
+    if len(section_articles) == 1 and not sec_docs:
+        art = section_articles[0]
+        md_path = CONTENT_DIR / (art["id"] + ".md")
+        if md_path.exists():
+            raw = md_path.read_text(encoding="utf-8")
+            _fm, body_md = parse_markdown(raw)
+            body = markdown_to_html(body_md)
+        else:
+            body = "<p>Nothing here yet.</p>"
+
+    elif section_articles:
         cat_order = [c["id"] for c in section_categories] if section_categories else list(grouped.keys())
         for cat_id in cat_order:
             cat_arts = grouped.get(cat_id)
