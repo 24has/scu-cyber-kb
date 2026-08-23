@@ -409,7 +409,7 @@ def build_index(sections, by_section, categories, cat_labels, report_incident=No
         if sec.get("parent"):
             # Sub-section (e.g. awareness under digital-safety) — skip on homepage
             continue
-        elif sec_id in ("digital-safety", "policies", "guidelines"):
+        elif sec_id in ("digital-safety", "policies", "guidelines", "training", "events"):
             # Compact tile card linking to the section landing page
             if sec_id == "digital-safety":
                 # Count articles across both sub-sections
@@ -420,6 +420,12 @@ def build_index(sections, by_section, categories, cat_labels, report_incident=No
                 count = sum(1 for d in (documents or []) if d.get("section") == "policies")
                 meta = f"{count} document" + ("s" if count != 1 else "")
                 desc = "University information security policies. Public."
+            elif sec_id == "training":
+                meta = "Required annually"
+                desc = "Cyber resilience training modules and how to complete them."
+            elif sec_id == "events":
+                meta = "Live + recorded"
+                desc = "Upcoming talks, workshops, and awareness events."
             else:  # guidelines
                 count = sum(1 for d in (documents or []) if d.get("section") == "guidelines")
                 meta = f"{count} document" + ("s" if count != 1 else "")
@@ -532,10 +538,8 @@ def build_section_page(section, section_articles, sec_docs, section_categories, 
     # Parent landing page: show sub-section tiles with subtitles
     if sub_sections and not section_articles and not sec_docs:
         sub_descriptions = {
-            "awareness": "Lockie, campaigns, posters, tips, and awareness events.",
+            "awareness": "Lockie, campaigns, posters, tips, and awareness material.",
             "guides": "Practical, behaviour-focused guides on MFA, passwords, email, VPN, data, and software.",
-            "training": "Mandatory training modules and how to complete them.",
-            "events": "Upcoming talks, workshops, and awareness campaigns.",
         }
         body = ""
         sub_html = '<div class="kb-card-grid">'

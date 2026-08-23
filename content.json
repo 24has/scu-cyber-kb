@@ -65,13 +65,11 @@
     },
     {
       "id": "training",
-      "label": "Training",
-      "parent": "digital-safety"
+      "label": "Training"
     },
     {
       "id": "events",
-      "label": "Events",
-      "parent": "digital-safety"
+      "label": "Events"
     }
   ],
   "categories": {
