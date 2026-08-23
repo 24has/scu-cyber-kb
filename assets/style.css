@@ -256,12 +256,21 @@ tbody tr:hover { background: var(--sage-light); }
   font-weight: 600;
   font-size: 0.9375rem;
   text-decoration: none;
-  transition: background .15s, color .15s, border-color .15s, transform .15s;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 .home-hero__cta { background: var(--gold); color: #032436; }
-.home-hero__cta:hover { background: #ffe166; color: #032436; }
+.home-hero__cta:hover {
+  background: #ffe166;
+  color: #032436;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(255,220,75,.4);
+}
 .home-hero__cta--ghost { background: transparent; color: var(--white); border: 1.5px solid rgba(255,255,255,.55); }
-.home-hero__cta--ghost:hover { border-color: var(--white); background: rgba(255,255,255,.08); }
+.home-hero__cta--ghost:hover {
+  border-color: var(--white);
+  background: rgba(255,255,255,.08);
+  transform: translateY(-2px);
+}
 
 .home-hero__figure {
   position: relative;

@@ -62,6 +62,16 @@
       "id": "guides",
       "label": "Guides",
       "parent": "digital-safety"
+    },
+    {
+      "id": "training",
+      "label": "Training",
+      "parent": "digital-safety"
+    },
+    {
+      "id": "events",
+      "label": "Events",
+      "parent": "digital-safety"
     }
   ],
   "categories": {
@@ -78,14 +88,6 @@
       {
         "id": "tips",
         "label": "Security tips"
-      },
-      {
-        "id": "training",
-        "label": "Training"
-      },
-      {
-        "id": "events",
-        "label": "Events"
       }
     ],
     "policies": [
@@ -132,6 +134,18 @@
       {
         "id": "software-security",
         "label": "Software security"
+      }
+    ],
+    "training": [
+      {
+        "id": "training",
+        "label": "Training"
+      }
+    ],
+    "events": [
+      {
+        "id": "events",
+        "label": "Events"
       }
     ]
   },
@@ -302,7 +316,7 @@
     {
       "id": "training",
       "title": "Cyber resilience training",
-      "section": "awareness",
+      "section": "training",
       "category": "training",
       "description": "Mandatory training modules and how to complete them.",
       "order": 5
@@ -310,7 +324,7 @@
     {
       "id": "events",
       "title": "Cyber resilience events",
-      "section": "awareness",
+      "section": "events",
       "category": "events",
       "description": "Upcoming talks, workshops, and awareness campaigns.",
       "order": 6
