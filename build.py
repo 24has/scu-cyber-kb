@@ -543,6 +543,8 @@ def _build_section_sidebar(section, section_articles, section_categories, cat_la
         for a in section_articles:
             grouped.setdefault(a.get("category", ""), []).append(a)
 
+        items += '<li class="sidebar-nav__heading">In this category</li>\n'
+
         # Use category config order
         cat_order = [c["id"] for c in section_categories] if section_categories else list(grouped.keys())
         for cat_id in cat_order:
@@ -574,7 +576,7 @@ def _build_section_sidebar(section, section_articles, section_categories, cat_la
                     siblings.append(s)
             heading = "Browse"
 
-        items += '<li class="sidebar-nav__heading">' + heading + "</li>\n"
+        items += '<li class="sidebar-nav__heading">In this category</li>\n' 
         for s in siblings:
             url = "/" + s["id"]
             if s.get("parent"):
@@ -736,7 +738,6 @@ def build_section_page(section, section_articles, sec_docs, section_categories, 
       <div class="page-layout">
         <aside class="page-sidebar">
           <ul class="sidebar-nav">
-            <li class="sidebar-nav__heading">In this category</li>
             {sidebar_items}
           </ul>
         </aside>
