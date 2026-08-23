@@ -431,14 +431,14 @@ def build_index(sections, by_section, categories, cat_labels, report_incident=No
 
             section_blocks += f"""
       <section class="home-section">
-        <div class="section-tile">
+        <a href="/{sec_id}" class="section-tile">
           <div class="section-tile__header">
             <h2 class="section-tile__heading">{sec['label']} {badge_html}</h2>
             <span class="section-tile__count">{meta}</span>
           </div>
           <p class="section-tile__desc">{desc}</p>
-          <a href="/{sec_id}" class="section-tile__link">Browse {sec['label']} →</a>
-        </div>
+          <span class="section-tile__cta">Browse {sec['label']} <span class="section-tile__arrow">→</span></span>
+        </a>
       </section>"""
 
     # ── Get help section ──
@@ -529,14 +529,22 @@ def build_section_page(section, section_articles, sec_docs, section_categories, 
 
     label = section["label"]
 
-    # Parent landing page: show sub-section tiles
+    # Parent landing page: show sub-section tiles with subtitles
     if sub_sections and not section_articles and not sec_docs:
+        sub_descriptions = {
+            "awareness": "Lockie, campaigns, posters, tips, and awareness events.",
+            "guides": "Practical, behaviour-focused guides on MFA, passwords, email, VPN, data, and software.",
+            "training": "Mandatory training modules and how to complete them.",
+            "events": "Upcoming talks, workshops, and awareness campaigns.",
+        }
         body = ""
         sub_html = '<div class="kb-card-grid">'
         for sub in sub_sections:
-            sub_arts = sum(len(section_articles) for _ in [1])  # placeholder; we'll recount properly below
+            desc = sub_descriptions.get(sub["id"], "")
             sub_html += '<a href="/' + section["id"] + '/' + sub["id"] + '" class="kb-card">'
             sub_html += '<h3>' + sub["label"] + '</h3>'
+            if desc:
+                sub_html += '<p>' + desc + '</p>'
             sub_html += '<span class="kb-card__count">Browse →</span>'
             sub_html += '</a>'
         sub_html += '</div>'
@@ -545,6 +553,7 @@ def build_section_page(section, section_articles, sec_docs, section_categories, 
     <div class="page-wrapper">
       <div class="page-banner">
         <h1>{label}</h1>
+        <p class="page-banner__intro">Practical guidance and awareness material to help SCU staff and students stay safe online.</p>
       </div>
       {body}
     </div>"""

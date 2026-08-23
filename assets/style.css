@@ -490,12 +490,21 @@ tbody tr:hover { background: var(--sage-light); }
 /* ── Section tile cards (homepage) ── */
 .section-tile {
   display: block;
-  padding: 1.5rem 1.75rem;
+  padding: 1.75rem 2rem;
   border-radius: var(--radius-lg);
   border: 1px solid var(--border-light);
   background: var(--white);
   box-shadow: 0 2px 12px rgba(3,36,54,.06);
   margin: 0;
+  text-decoration: none;
+  color: var(--text);
+  transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+}
+.section-tile:hover {
+  box-shadow: 0 8px 24px rgba(3,36,54,.12);
+  transform: translateY(-3px);
+  border-color: var(--border);
+  color: var(--text);
 }
 .section-tile__header {
   display: flex;
@@ -522,17 +531,23 @@ tbody tr:hover { background: var(--sage-light); }
 .section-tile__desc {
   font-size: 0.9375rem;
   color: var(--text-muted);
-  margin: 0 0 1rem;
+  margin: 0 0 1.25rem;
 }
-.section-tile__link {
+.section-tile__cta {
   display: inline-block;
   font-family: Montserrat, sans-serif;
   font-weight: 600;
   font-size: 0.9375rem;
   color: var(--navy);
-  text-decoration: none;
 }
-.section-tile__link:hover { color: var(--teal); text-decoration: underline; }
+.section-tile__arrow {
+  display: inline-block;
+  margin-left: 0.25rem;
+  transition: transform 0.2s ease;
+}
+.section-tile:hover .section-tile__arrow {
+  transform: translateX(4px);
+}
 
 /* ── Utility ── */
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
