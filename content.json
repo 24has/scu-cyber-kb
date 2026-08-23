@@ -41,10 +41,6 @@
       "label": "Announcements"
     },
     {
-      "id": "awareness",
-      "label": "Awareness"
-    },
-    {
       "id": "digital-safety",
       "label": "Digital Safety"
     },
@@ -56,6 +52,16 @@
       "id": "guidelines",
       "label": "Guidelines",
       "audience": "staff"
+    },
+    {
+      "id": "awareness",
+      "label": "Awareness",
+      "parent": "digital-safety"
+    },
+    {
+      "id": "guides",
+      "label": "Guides",
+      "parent": "digital-safety"
     }
   ],
   "categories": {
@@ -102,7 +108,7 @@
         "label": "Procedures"
       }
     ],
-    "digital-safety": [
+    "guides": [
       {
         "id": "authentication",
         "label": "Authentication"
@@ -312,7 +318,7 @@
     {
       "id": "mfa",
       "title": "Multi-factor authentication (MFA)",
-      "section": "digital-safety",
+      "section": "guides",
       "category": "authentication",
       "audience": [
         "staff",
@@ -324,7 +330,7 @@
     {
       "id": "passwords",
       "title": "Passwords and passphrases",
-      "section": "digital-safety",
+      "section": "guides",
       "category": "authentication",
       "audience": [
         "staff",
@@ -336,7 +342,7 @@
     {
       "id": "phishing",
       "title": "Report a phishing email",
-      "section": "digital-safety",
+      "section": "guides",
       "category": "email-security",
       "audience": [
         "staff",
@@ -348,7 +354,7 @@
     {
       "id": "email-security",
       "title": "Email security",
-      "section": "digital-safety",
+      "section": "guides",
       "category": "email-security",
       "audience": [
         "staff",
@@ -360,7 +366,7 @@
     {
       "id": "remote-access",
       "title": "Remote access and VPN",
-      "section": "digital-safety",
+      "section": "guides",
       "category": "remote-access",
       "audience": [
         "staff"
@@ -371,7 +377,7 @@
     {
       "id": "data-handling",
       "title": "Handling university data",
-      "section": "digital-safety",
+      "section": "guides",
       "category": "data-handling",
       "audience": [
         "staff"
@@ -382,7 +388,7 @@
     {
       "id": "software-security",
       "title": "Software security",
-      "section": "digital-safety",
+      "section": "guides",
       "category": "software-security",
       "audience": [
         "staff"

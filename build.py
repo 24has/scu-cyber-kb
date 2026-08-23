@@ -243,7 +243,7 @@ def build_site():
         by_section.setdefault(art["section"], []).append(art)
     by_section_docs = {}
     for doc in documents:
-        by_section_docs.setdefault(doc.get("section", "policies-procedures"), []).append(doc)
+        by_section_docs.setdefault(doc.get("section", ""), []).append(doc)
 
     cat_labels = {}
     for sec_id, cats in categories.items():
@@ -345,9 +345,26 @@ def build_site():
         sec_id = sec["id"]
         sec_arts = sorted(by_section.get(sec_id, []), key=lambda x: x.get("order", 99))
         sec_docs = sorted(by_section_docs.get(sec_id, []), key=lambda x: x.get("order", 99))
-        sec_html = build_section_page(sec, sec_arts, sec_docs, categories.get(sec_id, []), cat_labels)
-        (DIST / f"{sec_id}.html").write_text(sec_html, encoding="utf-8")
-        print(f"  Built: {DIST / f'{sec_id}.html'}")
+
+        if sec.get("parent"):
+            # Sub-section: build at /<parent>/<id>.html
+            parent_id = sec["parent"]
+            parent = next((s for s in sections if s["id"] == parent_id), None)
+            sub_sections = [s for s in sections if s.get("parent") == parent_id]
+            sec_html = build_section_page(sec, sec_arts, sec_docs, categories.get(sec_id, []), cat_labels, parent=parent, sub_sections=sub_sections)
+            (DIST / parent_id / sec_id).mkdir(parents=True, exist_ok=True)
+            (DIST / parent_id / sec_id / "index.html").write_text(sec_html, encoding="utf-8")
+            print(f"  Built: {DIST / parent_id / sec_id / 'index.html'}")
+        elif sec_id == "digital-safety":
+            # Parent section: build directory page with sub-tiles
+            sub_sections = [s for s in sections if s.get("parent") == "digital-safety"]
+            sec_html = build_section_page(sec, sec_arts, sec_docs, categories.get(sec_id, []), cat_labels, sub_sections=sub_sections)
+            (DIST / f"{sec_id}.html").write_text(sec_html, encoding="utf-8")
+            print(f"  Built: {DIST / f'{sec_id}.html'}")
+        else:
+            sec_html = build_section_page(sec, sec_arts, sec_docs, categories.get(sec_id, []), cat_labels)
+            (DIST / f"{sec_id}.html").write_text(sec_html, encoding="utf-8")
+            print(f"  Built: {DIST / f'{sec_id}.html'}")
 
     # ── 404 ──
     (DIST / "404.html").write_text(index_html, encoding="utf-8")
@@ -389,21 +406,16 @@ def build_index(sections, by_section, categories, cat_labels, report_incident=No
         <div class="announcement-grid">{items}</div>
       </section>"""
 
-        elif sec_id in ("awareness", "policies", "guidelines", "digital-safety"):
+        if sec.get("parent"):
+            # Sub-section (e.g. awareness under digital-safety) — skip on homepage
+            continue
+        elif sec_id in ("digital-safety", "policies", "guidelines"):
             # Compact tile card linking to the section landing page
-            # Count items for the meta line
             if sec_id == "digital-safety":
-                count = len(sec_arts)
-                meta = f"{count} article" + ("s" if count != 1 else "")
-                desc = "Practical, behaviour-focused security guides for staff and students."
-            elif sec_id == "awareness":
-                count = len(sec_arts)
-                meta = f"{count} item" + ("s" if count != 1 else "")
-                desc = "Campaigns, posters, tips, and events to keep security top of mind."
-            elif sec_id == "digital-safety":
-                count = len(sec_arts)
-                meta = f"{count} article" + ("s" if count != 1 else "")
-                desc = "Practical, behaviour-focused security guides for staff and students."
+                # Count articles across both sub-sections
+                sub_articles = sum(len(by_section.get(s["id"], [])) for s in sections if s.get("parent") == "digital-safety")
+                meta = f"{sub_articles} article" + ("s" if sub_articles != 1 else "")
+                desc = "Practical guides and awareness content to help you stay safe online."
             elif sec_id == "policies":
                 count = sum(1 for d in (documents or []) if d.get("section") == "policies")
                 meta = f"{count} document" + ("s" if count != 1 else "")
@@ -511,11 +523,46 @@ def build_index(sections, by_section, categories, cat_labels, report_incident=No
     return render_template(TEMPLATES_DIR / "base.html", variables)
 
 
-def build_section_page(section, section_articles, sec_docs, section_categories, cat_labels):
+def build_section_page(section, section_articles, sec_docs, section_categories, cat_labels, parent=None, sub_sections=None):
     with open(TEMPLATES_DIR / "base.html", "r", encoding="utf-8") as f:
         tpl = f.read()
 
     label = section["label"]
+
+    # Parent landing page: show sub-section tiles
+    if sub_sections and not section_articles and not sec_docs:
+        body = ""
+        sub_html = '<div class="kb-card-grid">'
+        for sub in sub_sections:
+            sub_arts = sum(len(section_articles) for _ in [1])  # placeholder; we'll recount properly below
+            sub_html += '<a href="/' + section["id"] + '/' + sub["id"] + '" class="kb-card">'
+            sub_html += '<h3>' + sub["label"] + '</h3>'
+            sub_html += '<span class="kb-card__count">Browse →</span>'
+            sub_html += '</a>'
+        sub_html += '</div>'
+        body = sub_html
+        content = f"""
+    <div class="page-wrapper">
+      <div class="page-banner">
+        <h1>{label}</h1>
+      </div>
+      {body}
+    </div>"""
+        breadcrumb_label = label
+        variables = {
+            "title": label,
+            "description": f"{label} — SCU Cyber Resilience",
+            "section_label": breadcrumb_label,
+            "content": content,
+            "search_box": search_box_html(),
+        }
+        return render_template(TEMPLATES_DIR / "base.html", variables)
+
+    # Sub-section page: adjust breadcrumb to show parent
+    if parent:
+        breadcrumb_label = f"{parent['label']} / {label}"
+    else:
+        breadcrumb_label = label
 
     # Group articles by category, preserving category config order
     grouped = {}
@@ -599,7 +646,7 @@ def build_section_page(section, section_articles, sec_docs, section_categories, 
     variables = {
         "title": label,
         "description": f"{label} — SCU Cyber Resilience",
-        "section_label": label,
+        "section_label": breadcrumb_label,
         "content": content,
         "search_box": search_box_html(),
     }
