@@ -345,24 +345,24 @@ def build_site():
         sec_id = sec["id"]
         sec_arts = sorted(by_section.get(sec_id, []), key=lambda x: x.get("order", 99))
         sec_docs = sorted(by_section_docs.get(sec_id, []), key=lambda x: x.get("order", 99))
+        parent = None
+        sub_sections = None
 
         if sec.get("parent"):
-            # Sub-section: build at /<parent>/<id>.html
             parent_id = sec["parent"]
             parent = next((s for s in sections if s["id"] == parent_id), None)
             sub_sections = [s for s in sections if s.get("parent") == parent_id]
-            sec_html = build_section_page(sec, sec_arts, sec_docs, categories.get(sec_id, []), cat_labels, parent=parent, sub_sections=sub_sections)
+        elif sec_id == "digital-safety":
+            sub_sections = [s for s in sections if s.get("parent") == "digital-safety"]
+
+        sec_html = build_section_page(sec, sec_arts, sec_docs, categories.get(sec_id, []), cat_labels, parent=parent, sub_sections=sub_sections, all_sections=sections)
+
+        if sec.get("parent"):
+            parent_id = sec["parent"]
             (DIST / parent_id / sec_id).mkdir(parents=True, exist_ok=True)
             (DIST / parent_id / sec_id / "index.html").write_text(sec_html, encoding="utf-8")
             print(f"  Built: {DIST / parent_id / sec_id / 'index.html'}")
-        elif sec_id == "digital-safety":
-            # Parent section: build directory page with sub-tiles
-            sub_sections = [s for s in sections if s.get("parent") == "digital-safety"]
-            sec_html = build_section_page(sec, sec_arts, sec_docs, categories.get(sec_id, []), cat_labels, sub_sections=sub_sections)
-            (DIST / f"{sec_id}.html").write_text(sec_html, encoding="utf-8")
-            print(f"  Built: {DIST / f'{sec_id}.html'}")
         else:
-            sec_html = build_section_page(sec, sec_arts, sec_docs, categories.get(sec_id, []), cat_labels)
             (DIST / f"{sec_id}.html").write_text(sec_html, encoding="utf-8")
             print(f"  Built: {DIST / f'{sec_id}.html'}")
 
@@ -529,7 +529,7 @@ def build_index(sections, by_section, categories, cat_labels, report_incident=No
     return render_template(TEMPLATES_DIR / "base.html", variables)
 
 
-def build_section_page(section, section_articles, sec_docs, section_categories, cat_labels, parent=None, sub_sections=None):
+def build_section_page(section, section_articles, sec_docs, section_categories, cat_labels, parent=None, sub_sections=None, all_sections=None):
     with open(TEMPLATES_DIR / "base.html", "r", encoding="utf-8") as f:
         tpl = f.read()
 
@@ -540,12 +540,24 @@ def build_section_page(section, section_articles, sec_docs, section_categories, 
         sub_descriptions = {
             "awareness": "Lockie, campaigns, posters, tips, and awareness material.",
             "guides": "Practical, behaviour-focused guides on MFA, passwords, email, VPN, data, and software.",
+            "training": "Mandatory training modules and how to complete them.",
+            "events": "Upcoming talks, workshops, and awareness campaigns.",
         }
         body = ""
+        # Build sub-sections list: include parent-bound children + related top-level sections (training, events)
+        related = list(sub_sections)
+        for s in (all_sections or []):
+            if s["id"] in ("training", "events") and s not in related:
+                related.append(s)
         sub_html = '<div class="kb-card-grid">'
-        for sub in sub_sections:
+        for sub in related:
             desc = sub_descriptions.get(sub["id"], "")
-            sub_html += '<a href="/' + section["id"] + '/' + sub["id"] + '" class="kb-card">'
+            # Sub-sections under parent live at /<parent>/<id>; top-level sections live at /<id>
+            if sub.get("parent"):
+                url = "/" + section["id"] + "/" + sub["id"]
+            else:
+                url = "/" + sub["id"]
+            sub_html += '<a href="' + url + '" class="kb-card">'
             sub_html += '<h3>' + sub["label"] + '</h3>'
             if desc:
                 sub_html += '<p>' + desc + '</p>'
